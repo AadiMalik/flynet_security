@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth/login');
-});
-
-Route::get('dashboard', function () {
-    return view('home');
-});
+Route::view('/','auth/login');
+Route::view('dashboard','home');
+Route::view('list-camera','camera/index');
+Route::view('camera/create','camera/create');
+Route::view('camera/view','camera/view');
+Route::view('camera/map','camera/map');
+Route::view('dashboard','home');
 
 Auth::routes();
 

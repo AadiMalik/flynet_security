@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/chartist/css/chartist.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css')}}">
     <!-- Custom Stylesheet -->
+    <link href="{{asset('assets/plugins/tables/css/datatable/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
     @yield('css')
 
@@ -259,29 +260,53 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{url('dashboard')}}" aria-expanded="false">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa fa-camera menu-icon"></i><span class="nav-text">My Cameras</span>
                         </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-camera')}}">List</a></li>
+                            <li><a href="{{url('camera/create')}}">Add New</a></li>
+                            <li><a href="{{url('camera/view')}}">View</a></li>
+                            <li><a href="{{url('camera/map')}}">Map</a></li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="{{url('dashboard')}}" aria-expanded="false">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa fa-video-camera menu-icon"></i><span class="nav-text">My Patrols</span>
                         </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('    ')}}">List</a></li>
+                            <li><a href="{{url('camera/create')}}">Add New</a></li>
+                            <li><a href="{{url('camera/view')}}">View</a></li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="{{url('dashboard')}}" aria-expanded="false">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa fa-cubes menu-icon"></i><span class="nav-text">My Mosaics</span>
                         </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-carema')}}">List</a></li>
+                            <li><a href="{{url('camera/create')}}">Add New</a></li>
+                            <li><a href="{{url('camera/view')}}">View</a></li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="{{url('dashboard')}}" aria-expanded="false">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa fa-play menu-icon"></i><span class="nav-text">My Videos</span>
                         </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-carema')}}">List</a></li>
+                            <li><a href="{{url('camera/view')}}">View</a></li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="{{url('dashboard')}}" aria-expanded="false">
-                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Monitoring</span>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fa fa-list menu-icon"></i><span class="nav-text">Monitoring</span>
                         </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-carema')}}">List</a></li>
+                            <li><a href="{{url('camera/view')}}">View</a></li>
+                        </ul>
                     </li>
                     <!-- <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -481,6 +506,13 @@
 
 
     <script src="{{asset('assets/js/dashboard/dashboard-1.js')}}"></script>
+    <script src="{{asset('assets/plugins/tables/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/tables/js/datatable/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/tables/js/datatable-init/datatable-basic.min.js')}}"></script>
+
+
+    <script src="{{asset('assets/plugins/validation/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/validation/jquery.validate-init.js')}}"></script>
     @yield('js')
 
 </body>
