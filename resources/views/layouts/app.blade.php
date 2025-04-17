@@ -260,52 +260,40 @@
                         </a>
                     </li>
                     <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <a href="{{url('my-cameras')}}" aria-expanded="false">
                             <i class="fa fa-camera menu-icon"></i><span class="nav-text">My Cameras</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('my-patrols')}}" aria-expanded="false">
+                            <i class="fa fa-video-camera menu-icon"></i><span class="nav-text">My Patrols</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('my-mosaics')}}" aria-expanded="false">
+                            <i class="fa fa-list menu-icon"></i><span class="nav-text">My Mosaics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('my-alarms')}}" aria-expanded="false">
+                            <i class="fa fa-bell menu-icon"></i><span class="nav-text">My Alarms</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('my-videos')}}" aria-expanded="false">
+                            <i class="fa fa-play menu-icon"></i><span class="nav-text">My Videos</span>
+                        </a>
+                    </li>
+                    <li class="nav-label">Admin</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fa fa-camera menu-icon"></i><span class="nav-text">Cameras</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="{{url('list-camera')}}">List</a></li>
                             <li><a href="{{url('camera/create')}}">Add New</a></li>
                             <li><a href="{{url('camera/view')}}">View</a></li>
                             <li><a href="{{url('camera/map')}}">Map</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="fa fa-video-camera menu-icon"></i><span class="nav-text">My Patrols</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="{{url('list-carema')}}">List</a></li>
-                            <li><a href="{{url('camera/create')}}">Add New</a></li>
-                            <li><a href="{{url('camera/view')}}">View</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="fa fa-cubes menu-icon"></i><span class="nav-text">My Mosaics</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="{{url('list-carema')}}">List</a></li>
-                            <li><a href="{{url('camera/create')}}">Add New</a></li>
-                            <li><a href="{{url('camera/view')}}">View</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="fa fa-play menu-icon"></i><span class="nav-text">My Videos</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="{{url('list-carema')}}">List</a></li>
-                            <li><a href="{{url('camera/view')}}">View</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="fa fa-list menu-icon"></i><span class="nav-text">Monitoring</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="{{url('list-carema')}}">List</a></li>
-                            <li><a href="{{url('camera/view')}}">View</a></li>
                         </ul>
                     </li>
                     <!-- <li class="mega-menu mega-menu-sm">
