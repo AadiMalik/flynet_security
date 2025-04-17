@@ -38,7 +38,7 @@
                     <div class="form-input-content">
                         <div class="card login-form mb-0">
                             <div class="card-body pt-5">
-                                <a class="text-center" href="index.html">
+                                <a class="text-center" href="{{url('/')}}">
                                     <h4>Flynet Security</h4>
                                 </a>
 
@@ -49,7 +49,7 @@
                                     <div class="form-group">
                                         <input type="password" class="form-control" placeholder="Password">
                                     </div>
-                                    <button class="btn login-form__btn submit w-100">Sign In</button>
+                                    <a class="btn login-form__btn submit w-100" href="{{url('dashboard  ')}}">Sign In</a>
                                 </form>
                                 <p class="mt-5 login-form__footer">Dont have account? <a href="page-register.html" class="text-primary">Sign Up</a> now</p>
                             </div>

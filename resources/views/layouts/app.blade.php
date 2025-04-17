@@ -232,9 +232,9 @@
 
                                         <hr class="my-2">
                                         <li>
-                                            <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock Screen</span></a>
+                                            <a href="{{url('login')}}"><i class="icon-lock"></i> <span>Lock Screen</span></a>
                                         </li>
-                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                        <li><a href="{{url('login')}}"><i class="icon-key"></i> <span>Logout</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -275,7 +275,7 @@
                             <i class="fa fa-video-camera menu-icon"></i><span class="nav-text">My Patrols</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('    ')}}">List</a></li>
+                            <li><a href="{{url('list-carema')}}">List</a></li>
                             <li><a href="{{url('camera/create')}}">Add New</a></li>
                             <li><a href="{{url('camera/view')}}">View</a></li>
                         </ul>
