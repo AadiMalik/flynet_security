@@ -16,6 +16,7 @@
     <!-- Custom Stylesheet -->
     <link href="{{asset('assets/plugins/tables/css/datatable/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     @yield('css')
 
 </head>
@@ -294,6 +295,27 @@
                             <li><a href="{{url('camera/create')}}">Add New</a></li>
                             <li><a href="{{url('camera/view')}}">View</a></li>
                             <li><a href="{{url('camera/map')}}">Map</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-bell menu-icon"></i><span class="nav-text">Alarms</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-alarm')}}">List</a></li>
+                            <li><a href="{{url('alarm/create')}}">Add New</a></li>
+                            <li><a href="{{url('alarm/view')}}">View</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-users menu-icon"></i><span class="nav-text">Groups</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
                         </ul>
                     </li>
                     <!-- <li class="mega-menu mega-menu-sm">

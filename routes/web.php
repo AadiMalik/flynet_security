@@ -35,6 +35,15 @@ Route::view('list-camera','camera/index');
 Route::view('camera/create','camera/create');
 Route::view('camera/view','camera/view');
 Route::view('camera/map','camera/map');
+
+Route::view('list-alarm','alarm/index');
+Route::view('alarm/create','alarm/create');
+Route::view('alarm/view','alarm/view');
+
+Route::view('list-group','group/index');
+Route::view('group/create','group/create');
+Route::view('group/view','group/view');
+
 Route::view('dashboard','home');
 
 Auth::routes();

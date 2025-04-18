@@ -1,5 +1,56 @@
 @extends('layouts.app')
+@section('css')
+<style>
+      .status-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: none;
+            background-color: #f4f4f4;
+            color: #333;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            height: 80px;
+            width: 100%;
+            transition: all 0.3s ease;
+      }
 
+      .status-button .icon {
+            font-size: 22px;
+      }
+
+      .status-button .text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+      }
+
+      .status-button .label {
+            font-size: 12px;
+            color: #666;
+      }
+
+      .status-button .count {
+            font-size: 20px;
+            font-weight: bold;
+      }
+
+      .status-button.active {
+            background-color: #007bff;
+            color: #fff;
+      }
+
+      .status-button.active .label {
+            color: #fff;
+      }
+
+      .status-button:hover {
+            transform: scale(1.02);
+            cursor: pointer;
+      }
+</style>
+@endsection
 @section('content')
 <!--**********************************
             Content body start
@@ -10,7 +61,7 @@
             <div class="col p-md-0">
                   <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">My Cameras</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Cameras</a></li>
                   </ol>
             </div>
       </div>
@@ -27,7 +78,64 @@
                                     </a>
                               </div>
                               <div class="card-body">
+                                    <div class="row">
+                                          <div class="col-md-12">
+                                                <div class="container mt-2">
+                                                      <div class="row g-3" id="status-filters">
+                                                            <div class="col-6 col-md">
+                                                                  <button class="status-button active w-100" data-status="enabled">
+                                                                        <div class="icon"><i class="fas fa-check"></i></div>
+                                                                        <div class="text">
+                                                                              <div class="label">Enabled</div>
+                                                                              <div class="count">185</div>
+                                                                        </div>
+                                                                  </button>
+                                                            </div>
 
+                                                            <div class="col-6 col-md">
+                                                                  <button class="status-button w-100" data-status="disabled">
+                                                                        <div class="icon"><i class="fas fa-video-slash"></i></div>
+                                                                        <div class="text">
+                                                                              <div class="label">Disabled</div>
+                                                                              <div class="count">0</div>
+                                                                        </div>
+                                                                  </button>
+                                                            </div>
+
+                                                            <div class="col-6 col-md">
+                                                                  <button class="status-button w-100" data-status="online">
+                                                                        <div class="icon"><i class="fas fa-wifi"></i></div>
+                                                                        <div class="text">
+                                                                              <div class="label">Online</div>
+                                                                              <div class="count">162</div>
+                                                                        </div>
+                                                                  </button>
+                                                            </div>
+
+                                                            <div class="col-6 col-md">
+                                                                  <button class="status-button w-100" data-status="offline">
+                                                                        <div class="icon"><i class="fas fa-ban"></i></div>
+                                                                        <div class="text">
+                                                                              <div class="label">Offline</div>
+                                                                              <div class="count">23</div>
+                                                                        </div>
+                                                                  </button>
+                                                            </div>
+
+                                                            <div class="col-6 col-md">
+                                                                  <button class="status-button w-100" data-status="unstable">
+                                                                        <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+                                                                        <div class="text">
+                                                                              <div class="label">Unstable</div>
+                                                                              <div class="count">0</div>
+                                                                        </div>
+                                                                  </button>
+                                                            </div>
+                                                      </div>
+                                                </div>
+
+                                          </div>
+                                    </div>
                                     <div class="table-responsive">
                                           <table class="table table-striped table-bordered zero-configuration">
                                                 <thead>
@@ -221,4 +329,30 @@
 <!--**********************************
             Content body end
         ***********************************-->
+@endsection
+@section('js')
+<script>
+      $('.status-button').on('click', function() {
+            $('.status-button').removeClass('active');
+            $(this).addClass('active');
+
+            const status = $(this).data('status');
+
+            $.ajax({
+                  url: '/your-endpoint',
+                  method: 'POST',
+                  data: {
+                        status
+                  },
+                  headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+                  success: function(response) {
+                        console.log('Filtered:', response);
+                        // handle UI update
+                  }
+            });
+      });
+</script>
+
 @endsection

@@ -37,7 +37,29 @@
                                                       </div>
                                                       <div class="col-md-6">
                                                             <div class="form-group">
-                                                                  <label class="col-form-label" for="ip">IP Address <span class="text-danger">*</span>
+                                                                  <label class="col-form-label" for="manufacture">Manufacturer/Plantilla <span class="text-danger">*</span>
+                                                                  </label>
+                                                                  <select class="form-control" name="manufacture" id="manufacture">
+                                                                        <option value="">--Select Manufacturer--</option>
+                                                                        <option value="RTSP Generic">RTSP Generic</option>
+                                                                  </select>
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                  <label class="col-form-label" for="protocol">Protocol <span class="text-danger">*</span>
+                                                                  </label>
+                                                                  <select class="form-control" name="protocol" id="protocol">
+                                                                        <option value="">--Select Protocolr--</option>
+                                                                        <option value="RTSP">RTSP</option>
+                                                                        <option value="P2P">P2P</option>
+                                                                        <option value="RTMP">RTMP</option>
+                                                                  </select>
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                  <label class="col-form-label" for="ip">IP Address/Url <span class="text-danger">*</span>
                                                                   </label>
                                                                   <input type="text" class="form-control" id="ip" name="ip" placeholder="Enter ip address..">
                                                             </div>
