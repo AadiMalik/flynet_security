@@ -318,6 +318,138 @@
                             <li><a href="{{url('group/view')}}">View</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-user-friends menu-icon"></i><span class="nav-text">Users</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-user-secret menu-icon"></i><span class="nav-text">Roles</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-lock menu-icon"></i><span class="nav-text">Permissions</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-list menu-icon"></i><span class="nav-text">Mosaics</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-video menu-icon"></i><span class="nav-text">Patrols</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Contols</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-desktop menu-icon"></i><span class="nav-text">Access</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-clipboard-check menu-icon"></i><span class="nav-text">Reports</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-server menu-icon"></i><span class="nav-text">Servers</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-user menu-icon"></i><span class="nav-text">Customers</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-clipboard-list menu-icon"></i><span class="nav-text">Activity Logs</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-bell menu-icon"></i><span class="nav-text">Notifications</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-label">Other</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-calculator menu-icon"></i><span class="nav-text">Consumption Calculator</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="fas fa-list menu-icon"></i><span class="nav-text">RTSPs Address List</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{url('list-group')}}">List</a></li>
+                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('group/view')}}">View</a></li>
+                        </ul>
+                    </li>
+
                     <!-- <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Layouts</span>
