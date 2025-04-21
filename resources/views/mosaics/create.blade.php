@@ -10,7 +10,7 @@
             <div class="col p-md-0">
                   <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{url('list-patrol')}}">Patrols</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('list-mosaic')}}">Mosaics</a></li>
                         <li class="breadcrumb-item active"><a href="javascript:void(0)">Create</a></li>
                   </ol>
             </div>
@@ -22,7 +22,7 @@
                   <div class="col-lg-12">
                         <div class="card">
                               <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4 class="card-title mb-0">Add New Patrol</h4>
+                                    <h4 class="card-title mb-0">Add New Mosaic</h4>
                               </div>
                               <div class="card-body">
                                     <div class="form-validation">
@@ -37,9 +37,26 @@
                                                       </div>
                                                       <div class="col-md-6">
                                                             <div class="form-group">
-                                                                  <label class="col-form-label" for="patrol_time">Patrol Time (s) <span class="text-danger">*</span>
+                                                                  <label class="col-form-label" for="Type">Type <span class="text-danger">*</span>
                                                                   </label>
-                                                                  <input type="number" class="form-control" name="patrol_time" id="patrol_time" placeholder="Enter patrol time" value="30">
+                                                                  <select name="type" class="form-control" id="type">
+                                                                        <option value="1">Cameras</option>
+                                                                  </select>
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                  <label class="col-form-label" for="no_of_camera">Number Of Cameras <span class="text-danger">*</span>
+                                                                  </label>
+                                                                  <select name="no_of_camera" class="form-control" id="no_of_camera">
+                                                                        <option value="1">1 Camera</option>
+                                                                        <option value="2">2 Cameras</option>
+                                                                        <option value="4">4 Cameras</option>
+                                                                        <option value="6">6 Cameras</option>
+                                                                        <option value="9">9 Cameras</option>
+                                                                        <option value="12">12 Cameras</option>
+                                                                        <option value="16">16 Cameras</option>
+                                                                  </select>
                                                             </div>
                                                       </div>
                                                       <div class="col-md-6">
@@ -52,19 +69,6 @@
                                                                   </select>
                                                             </div>
                                                       </div>
-                                                      <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                  <label class="col-form-label" for="mosaics">Mosaics <span class="text-danger">*</span>
-                                                                  </label>
-                                                                  <select name="mosaics" class="form-control" id="mosaics" multiple>
-                                                                        <option value="1">Echo Surveillance Hub</option>
-                                                                        <option value="2">Centralized Monitoring Point</option>
-                                                                        <option value="3">OmniTrack East Terminal</option>
-                                                                        <option value="4">Northview Camera Grid</option>
-                                                                  </select>
-                                                            </div>
-                                                      </div>
-                                                      
                                                 </div>
                                                 <div class="row">
                                                       <div class="col-lg-12 mt-4">

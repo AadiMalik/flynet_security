@@ -252,7 +252,7 @@
             Sidebar start
         ***********************************-->
         <div class="nk-sidebar">
-            <div class="nk-nav-scroll">
+            <div class="nk-nav-scroll" style="overflow: auto !important;">
                 <ul class="metismenu" id="menu">
                     <li class="nav-label">Dashboard</li>
                     <li>
@@ -315,7 +315,6 @@
                         <ul aria-expanded="false">
                             <li><a href="{{url('list-group')}}">List</a></li>
                             <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
                         </ul>
                     </li>
                     <li>
@@ -323,9 +322,9 @@
                             <i class="fas fa-user-friends menu-icon"></i><span class="nav-text">Users</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
+                            <li><a href="{{url('list-user')}}">List</a></li>
+                            <li><a href="{{url('user/create')}}">Add New</a></li>
+                            <li><a href="{{url('user/view')}}">View</a></li>
                         </ul>
                     </li>
                     <li>
@@ -333,9 +332,9 @@
                             <i class="fas fa-user-secret menu-icon"></i><span class="nav-text">Roles</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
+                            <li><a href="{{url('list-role')}}">List</a></li>
+                            <li><a href="{{url('role/create')}}">Add New</a></li>
+                            <li><a href="{{url('role/view')}}">View</a></li>
                         </ul>
                     </li>
                     <li>
@@ -343,9 +342,8 @@
                             <i class="fas fa-lock menu-icon"></i><span class="nav-text">Permissions</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
+                            <li><a href="{{url('list-permission')}}">List</a></li>
+                            <li><a href="{{url('permission/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>
@@ -353,9 +351,8 @@
                             <i class="fas fa-list menu-icon"></i><span class="nav-text">Mosaics</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
+                            <li><a href="{{url('list-mosaic')}}">List</a></li>
+                            <li><a href="{{url('mosaic/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>
@@ -363,9 +360,8 @@
                             <i class="fas fa-video menu-icon"></i><span class="nav-text">Patrols</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
+                            <li><a href="{{url('list-patrol')}}">List</a></li>
+                            <li><a href="{{url('patrol/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li class="nav-label">Contols</li>
@@ -380,16 +376,12 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="fas fa-clipboard-check menu-icon"></i><span class="nav-text">Reports</span>
+                        <a href="{{url('list-reports')}}" aria-expanded="false">
+                            <i class="fa fa-file menu-icon"></i><span class="nav-text">Reports</span>
                         </a>
-                        <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
-                        </ul>
                     </li>
-                    <li>
+                    
+                    <!-- <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fas fa-server menu-icon"></i><span class="nav-text">Servers</span>
                         </a>
@@ -398,15 +390,14 @@
                             <li><a href="{{url('group/create')}}">Add New</a></li>
                             <li><a href="{{url('group/view')}}">View</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fas fa-user menu-icon"></i><span class="nav-text">Customers</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
-                            <li><a href="{{url('group/view')}}">View</a></li>
+                            <li><a href="{{url('list-customer')}}">List</a></li>
+                            <li><a href="{{url('customer/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>

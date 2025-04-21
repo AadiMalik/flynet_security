@@ -8321,7 +8321,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     display: none; }
   [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nk-sidebar .slimScrollDiv,
   [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nk-sidebar .nk-nav-scroll {
-    overflow: visible !important; }
+    overflow: auto !important; }
   [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nk-sidebar .metismenu li {
     position: relative; }
     [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nk-sidebar .metismenu li > ul {
@@ -8490,7 +8490,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       display: none; }
     [data-sidebar-style="mini"] .nk-sidebar .slimScrollDiv,
     [data-sidebar-style="mini"] .nk-sidebar .nk-nav-scroll {
-      overflow: visible !important; }
+      overflow: auto !important; }
     [data-sidebar-style="mini"] .nk-sidebar .metismenu li {
       position: relative; }
       [data-sidebar-style="mini"] .nk-sidebar .metismenu li a {
@@ -8698,7 +8698,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     [data-layout="horizontal"] .nk-sidebar .slimScrollDiv {
       overflow: visible !important; }
       [data-layout="horizontal"] .nk-sidebar .slimScrollDiv .nk-nav-scroll {
-        overflow: visible !important; }
+        overflow: auto !important; }
     [data-layout="horizontal"] .nk-sidebar .nav-user,
     [data-layout="horizontal"] .nk-sidebar .nav-label {
       display: none; }
@@ -9048,7 +9048,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   transition: all .5s ease-in-out;
   padding-bottom: 1.875rem; }
   [direction="rtl"] .sidebar-right .slimScrollDiv {
-    overflow: visible !important; }
+    overflow: auto !important; }
   .sidebar-right .sidebar-right-trigger {
     position: absolute;
     z-index: 9;

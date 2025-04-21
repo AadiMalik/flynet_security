@@ -42,7 +42,28 @@ Route::view('alarm/view','alarm/view');
 
 Route::view('list-group','group/index');
 Route::view('group/create','group/create');
-Route::view('group/view','group/view');
+
+Route::view('list-user','users/index');
+Route::view('user/create','users/create');
+Route::view('user/view','users/view');
+
+Route::view('list-role','roles/index');
+Route::view('role/create','roles/create');
+Route::view('role/view','roles/view');
+
+Route::view('list-permission','permissions/index');
+Route::view('permission/create','permissions/create');
+
+Route::view('list-mosaic','mosaics/index');
+Route::view('mosaic/create','mosaics/create');
+
+Route::view('list-patrol','patrols/index');
+Route::view('patrol/create','patrols/create');
+
+Route::view('list-reports','reports/index');
+
+Route::view('list-customer','customers/index');
+Route::view('customer/create','customers/create');
 
 Route::view('dashboard','home');
 
