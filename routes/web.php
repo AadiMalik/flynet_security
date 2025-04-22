@@ -65,6 +65,19 @@ Route::view('list-reports','reports/index');
 Route::view('list-customer','customers/index');
 Route::view('customer/create','customers/create');
 
+Route::view('access','access/index');
+
+Route::view('list-server','server/index');
+
+Route::view('activity-log','activity_log/index');
+
+Route::view('list-notification','notifications/index');
+Route::view('notification/create','notifications/create');
+
+Route::view('consumption-calculator','consumption/index');
+
+Route::view('address-list','address_list/index');
+
 Route::view('dashboard','home');
 
 Auth::routes();
