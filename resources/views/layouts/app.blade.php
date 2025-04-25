@@ -332,9 +332,8 @@
                             <i class="fas fa-user-secret menu-icon"></i><span class="nav-text">Roles</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-role')}}">List</a></li>
-                            <li><a href="{{url('role/create')}}">Add New</a></li>
-                            <li><a href="{{url('role/view')}}">View</a></li>
+                            <li><a href="{{url('roles')}}">List</a></li>
+                            <li><a href="{{url('roles/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>
@@ -342,8 +341,8 @@
                             <i class="fas fa-lock menu-icon"></i><span class="nav-text">Permissions</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-permission')}}">List</a></li>
-                            <li><a href="{{url('permission/create')}}">Add New</a></li>
+                            <li><a href="{{url('permissions')}}">List</a></li>
+                            <li><a href="{{url('permissions/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>

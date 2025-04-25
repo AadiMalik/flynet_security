@@ -20,126 +20,31 @@
       <div class="container-fluid">
             <div class="row">
                   <div class="col-12">
+                        @if (session()->has('message'))
+                        <div class="alert alert-success">
+                              {{ session()->get('message') }}
+                        </div>
+                        @endif
                         <div class="card">
                               <div class="card-header d-flex justify-content-between align-items-center">
                                     <h4 class="card-title mb-0">Roles</h4>
-                                    <a class="btn btn-primary btn-md m-1" href="{{ url('role/create') }}">
+                                    <a class="btn btn-primary btn-md m-1" href="{{ url('roles/create') }}">
                                           <i class="fa fa-plus text-white mr-2"></i> New Role
                                     </a>
                               </div>
                               <div class="card-body">
                                     <div class="table-responsive">
-                                          <table class="table table-striped table-bordered zero-configuration">
+                                          <table id="role_table" class="table table-striped display" style="width:100%">
                                                 <thead>
                                                       <tr>
-                                                            <th>Name</th>
-                                                            <th>Permissions</th>
-                                                            <th>Active</th>
-                                                            <th>Created Date</th>
-                                                            <th>Action</th>
+                                                            <th scope="col">Role Name</th>
+                                                            <th scope="col">Permissions</th>
+                                                            <th scope="col">Action</th>
                                                       </tr>
                                                 </thead>
                                                 <tbody>
-                                                      <tr>
-                                                            <td>Editor</td>
-                                                            <td>
-                                                                  <span class="badge badge-primary">dashboard</span>
-                                                                  <span class="badge badge-primary">my_camera_view</span>
-                                                                  <span class="badge badge-primary">my_camera_edit</span>
-                                                            </td>
-                                                            <td>Yes</td>
-                                                            <td>2024-08-10</td>
-                                                            <td>
-                                                                  <a href="{{url('role/create')}}" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Edit</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-warning btn-sm"><span class="fa fa-eye"></span> View</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span> Delete</a>
-                                                            </td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Viewer</td>
-                                                            <td>
-                                                                  <span class="badge badge-primary">dashboard</span>
-                                                                  <span class="badge badge-primary">my_camera_view</span>
-                                                            </td>
-                                                            <td>No</td>
-                                                            <td>2023-12-01</td>
-                                                            <td>
-                                                                  <a href="{{url('role/create')}}" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Edit</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-warning btn-sm"><span class="fa fa-eye"></span> View</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span> Delete</a>
-                                                            </td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Manager</td>
-                                                            <td>
-                                                                  <span class="badge badge-primary">dashboard</span>
-                                                                  <span class="badge badge-primary">my_camera_access</span>
-                                                                  <span class="badge badge-primary">my_camera_create</span>
-                                                                  <span class="badge badge-primary">my_patrols_access</span>
-                                                            </td>
-                                                            <td>Yes</td>
-                                                            <td>2025-01-22</td>
-                                                            <td>
-                                                                  <a href="{{url('role/create')}}" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Edit</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-warning btn-sm"><span class="fa fa-eye"></span> View</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span> Delete</a>
-                                                            </td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Security Chief</td>
-                                                            <td>
-                                                                  <span class="badge badge-primary">dashboard</span>
-                                                                  <span class="badge badge-primary">my_patrols_access</span>
-                                                                  <span class="badge badge-primary">incident_reports_view</span>
-                                                            </td>
-                                                            <td>Yes</td>
-                                                            <td>2023-09-12</td>
-                                                            <td>
-                                                                  <a href="{{url('role/create')}}" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Edit</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-warning btn-sm"><span class="fa fa-eye"></span> View</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span> Delete</a>
-                                                            </td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>Admin Assistant</td>
-                                                            <td>
-                                                                  <span class="badge badge-primary">dashboard</span>
-                                                                  <span class="badge badge-primary">my_camera_view</span>
-                                                                  <span class="badge badge-primary">user_support_access</span>
-                                                            </td>
-                                                            <td>No</td>
-                                                            <td>2022-05-06</td>
-                                                            <td>
-                                                                  <a href="{{url('role/create')}}" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Edit</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-warning btn-sm"><span class="fa fa-eye"></span> View</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span> Delete</a>
-                                                            </td>
-                                                      </tr>
-                                                      <tr>
-                                                            <td>IT Supervisor</td>
-                                                            <td>
-                                                                  <span class="badge badge-primary">dashboard</span>
-                                                                  <span class="badge badge-primary">my_camera_access</span>
-                                                                  <span class="badge badge-primary">my_camera_edit</span>
-                                                                  <span class="badge badge-primary">system_logs_view</span>
-                                                            </td>
-                                                            <td>Yes</td>
-                                                            <td>2024-03-03</td>
-                                                            <td>
-                                                                  <a href="{{url('role/create')}}" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Edit</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-warning btn-sm"><span class="fa fa-eye"></span> View</a>
-                                                                  <a href="{{url('role/view')}}" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span> Delete</a>
-                                                            </td>
-                                                      </tr>
 
                                                 </tbody>
-                                                <tfoot>
-                                                      <th>Name</th>
-                                                      <th>Permissions</th>
-                                                      <th>Active</th>
-                                                      <th>Created Date</th>
-                                                      <th>Action</th>
-                                                </tfoot>
                                           </table>
                                     </div>
                               </div>
@@ -154,5 +59,15 @@
         ***********************************-->
 @endsection
 @section('js')
-
+    @include('includes.datatable', [
+        'columns' => "
+             {data: 'name' , name: 'name'},
+             {data: 'permissions' , name: 'permissions' , 'sortable': false , searchable: false},
+            {data: 'action' , name: 'action' , 'sortable': false , searchable: false},",
+        'route' => 'roles/data',
+        'buttons' => false,
+        'pageLength' => 10,
+        'class' => 'role_table',
+        'variable' => 'role_table',
+    ])
 @endsection

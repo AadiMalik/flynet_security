@@ -10,8 +10,10 @@
             <div class="col p-md-0">
                   <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{url('list-role')}}">Roles</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Create</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('roles')}}">Roles</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">
+                                    {{isset($role)?'Edit':'Create'}}
+                              </a></li>
                   </ol>
             </div>
       </div>
@@ -20,43 +22,51 @@
       <div class="container-fluid">
             <div class="row justify-content-center">
                   <div class="col-lg-12">
-                        <div class="card">
+                        <div class="card mb-4">
                               <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4 class="card-title mb-0">Add New Role</h4>
+                                    <h4 class="card-title mb-0">{{isset($role)?'Update':'Add New'}} Role</h4>
                               </div>
-                              <div class="card-body">
-                                    <div class="form-validation">
-                                          <form class="form-valide" action="javascript:void(0)" method="post">
-                                                <div class="row">
-                                                      <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                  <label class="col-form-label" for="name">Name <span class="text-danger">*</span>
-                                                                  </label>
-                                                                  <input type="text" class="form-control" id="name" name="name" placeholder="Enter name..">
-                                                            </div>
-                                                      </div>
-                                                      <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                  <label class="col-form-label" for="permissions">Permissions <span class="text-danger">*</span>
-                                                                  </label>
-                                                                  <select class="form-control" name="permissions" id="permissions" multiple>
-                                                                        <option value="1">dasboard</option>
-                                                                        <option value="2">my_camera_access</option>
-                                                                        <option value="2">my_camera_edit</option>
-                                                                        <option value="2">my_camera_create</option>
-                                                                        <option value="2">system_logs_view</option>
-                                                                  </select>
-                                                            </div>
-                                                      </div>
+                              <form action="{{ url('roles/store') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="card-body">
+                                          <div class="row">
+                                                <input type="hidden" name="id" value="{{isset($role)?$role->id:''}}" />
+                                                <div class="col-md-6 form-group mb-3">
+                                                      <label for="name">Role Name<span class="text-danger">*</span> </label>
+                                                      <input class="form-control" type="text" name="name" value="{{isset($role)?$role->name:old('name')}}"
+                                                            maxlength="50" placeholder="Enter Role name" required />
+                                                      @error('name')
+                                                      <span class="text-danger">{{ $message }}</span>
+                                                      @enderror
                                                 </div>
-                                                <div class="row">
-                                                      <div class="col-lg-12 mt-4">
-                                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                                      </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                      <label for="permissions">Permissions<span class="text-danger">*</span>
+                                                            <button id="selectAll" type="button" class="btn-success" style="border:1px solid #000;">Select All</button>
+                                                            <button id="deselectAll" type="button" class="btn-danger" style="border:1px solid #000;">Deselect All</button>
+                                                      </label>
+                                                      <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple required style="height: 100px;">
+                                                            @foreach($permissions as $permission)
+                                                            <option value="{{ $permission->name }}" {{ (isset($role) && $role->hasPermissionTo($permission->name)) ? 'selected' : '' }}>{{ $permission->name??'' }}</option>
+                                                            @endforeach
+                                                      </select>
+                                                      @error('permissions')
+                                                      <span class="text-danger">{{ $message }}</span>
+                                                      @enderror
                                                 </div>
-                                          </form>
+
+                                          </div>
+
                                     </div>
-                              </div>
+                                    <div class="card-footer">
+
+                                          <div class="row">
+                                                <div class="col-md-12">
+                                                      <a href="{{ url('roles') }}" class="btn btn-danger">Cancel</a>
+                                                      <button class="btn btn-primary">{{isset($role)?'Update':'Save'}}</button>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </form>
                         </div>
                   </div>
             </div>
@@ -66,4 +76,24 @@
 <!--**********************************
             Content body end
         ***********************************-->
+@endsection
+@section('js')
+<script>
+    $(document).ready(function() {
+
+        // Select All Button
+        $('#selectAll').on('click', function() {
+            let allValues = [];
+            $('#permissions option').each(function() {
+                allValues.push($(this).val()); // Collect all values
+            });
+            $('#permissions').val(allValues).trigger('change'); // Set values and trigger change
+        });
+
+        // Deselect All Button
+        $('#deselectAll').on('click', function() {
+            $('#permissions').val(null).trigger('change'); // Clear all selections
+        });
+    });
+</script>
 @endsection
