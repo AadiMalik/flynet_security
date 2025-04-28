@@ -25,24 +25,21 @@ class UserService
         ->addColumn('role', function ($item) {
             return $item->roles[0]->name??'';
         })
-        ->addColumn('supplier', function ($item) {
-            return $item->supplier_name->name??'';
-        })
             ->addColumn('action', function ($item) {
                 $action_column = '';
-                $edit_column    = "<a class='text-success mr-2' href='users/edit/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-edit'></i>Edit</a>";
-                $view_column    = "<a class='text-warning mr-2' href='users/view/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-eye'></i>View</a>";
+                $edit_column    = "<a class='btn btn-warning btn-sm mr-2' href='users/edit/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-edit'></i>Edit</a>";
+                // $view_column    = "<a class='btn btn-info btn-sm mr-2' href='users/view/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-eye'></i>View</a>";
 
-                if(Auth::user()->can('users_edit'))
+                // if(Auth::user()->can('users_edit'))
                 $action_column .= $edit_column;
 
-                if(Auth::user()->can('users_view'))
-                $action_column .= $view_column;
+                // if(Auth::user()->can('users_view'))
+                // $action_column .= $view_column;
                 
 
                 return $action_column;
             })
-            ->rawColumns(['role','supplier','action'])
+            ->rawColumns(['role','action'])
             ->make(true);
         return $data;
     }
@@ -65,14 +62,6 @@ class UserService
     public function getById($id)
     {
         return $this->model_user->getModel()::with(['roles','permissions'])->find($id);
-    }
-
-    public function getUserWithoutSupplier(){
-        return User::with('roles')
-        ->whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'Supplier/Karigar User');
-        })
-        ->get();
     }
 
     public function getAdminIdsOnly(){

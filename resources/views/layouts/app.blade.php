@@ -322,9 +322,8 @@
                             <i class="fas fa-user-friends menu-icon"></i><span class="nav-text">Users</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-user')}}">List</a></li>
-                            <li><a href="{{url('user/create')}}">Add New</a></li>
-                            <li><a href="{{url('user/view')}}">View</a></li>
+                            <li><a href="{{url('users')}}">List</a></li>
+                            <li><a href="{{url('users/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>
