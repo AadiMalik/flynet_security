@@ -73,7 +73,7 @@
                         <span class="toggle-icon"><i class="icon-menu"></i></span>
                     </div>
                 </div>
-                <div class="header-left">
+                <!-- <div class="header-left">
                     <div class="input-group icons">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
@@ -85,7 +85,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="header-right">
                     <ul class="clearfix">
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
@@ -222,7 +222,11 @@
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="app-profile.html"><i class="icon-user"></i> <span>Profile</span></a>
+                                            <b>{{ Auth::user()->name }}</b>
+                                        </li>
+                                        <hr class="my-2">
+                                        <li>
+                                            <a href="#"><i class="icon-user"></i> <span>Profile</span></a>
                                         </li>
                                         <li>
                                             <a href="javascript:void()">
@@ -233,9 +237,28 @@
 
                                         <hr class="my-2">
                                         <li>
-                                            <a href="{{url('login')}}"><i class="icon-lock"></i> <span>Lock Screen</span></a>
+                                            <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                <i class="icon-lock"></i> <span>Lock Screen</span>
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                            <!-- <a href="{{url('login')}}"><i class="icon-lock"></i> <span>Lock Screen</span></a> -->
                                         </li>
-                                        <li><a href="{{url('login')}}"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                        <li>
+                                        <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                <i class="icon-key"></i> <span>Logout</span>
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                            <!-- <a href="{{url('login')}}"><i class="icon-key"></i> <span>Logout</span></a></li> -->
                                     </ul>
                                 </div>
                             </div>
@@ -378,7 +401,7 @@
                             <i class="fa fa-server menu-icon"></i><span class="nav-text">Server</span>
                         </a>
                     </li>
-                    
+
                     <!-- <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fas fa-server menu-icon"></i><span class="nav-text">Servers</span>
@@ -412,7 +435,7 @@
                             <li><a href="{{url('notification/create')}}">Add New</a></li>
                         </ul>
                     </li>
-                    
+
                     <li class="nav-label">Other</li>
                     <li>
                         <a href="{{url('consumption-calculator')}}" aria-expanded="false">

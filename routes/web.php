@@ -85,33 +85,36 @@ Route::view('dashboard', 'home');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => ['auth']], function () {
 
-Route::group(['prefix' => 'permissions'], function () {
-      Route::get('/', [PermissionController::class, 'index']);
-      Route::post('data', [PermissionController::class, 'getData'])->name('permission.data');
-      Route::get('create', [PermissionController::class, 'create']);
-      Route::post('store', [PermissionController::class, 'store']);
-      Route::get('edit/{id}', [PermissionController::class, 'edit']);
-      Route::post('update', [PermissionController::class, 'update']);
-});
+      Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'roles'], function () {
-      Route::get('/', [RoleController::class, 'index']);
-      Route::post('data', [RoleController::class, 'getData'])->name('role.data');
-      Route::get('create', [RoleController::class, 'create']);
-      Route::post('store', [RoleController::class, 'store']);
-      Route::get('edit/{id}', [RoleController::class, 'edit']);
-      Route::post('update', [RoleController::class, 'update']);
-});
+      Route::group(['prefix' => 'permissions'], function () {
+            Route::get('/', [PermissionController::class, 'index']);
+            Route::post('data', [PermissionController::class, 'getData'])->name('permission.data');
+            Route::get('create', [PermissionController::class, 'create']);
+            Route::post('store', [PermissionController::class, 'store']);
+            Route::get('edit/{id}', [PermissionController::class, 'edit']);
+            Route::post('update', [PermissionController::class, 'update']);
+      });
 
-Route::group(['prefix' => 'users'], function () {
-      Route::get('/', [UserController::class, 'index']);
-      Route::post('data', [UserController::class, 'getData'])->name('user.data');
-      Route::get('create', [UserController::class, 'create']);
-      Route::post('store', [UserController::class, 'store']);
-      Route::get('edit/{id}', [UserController::class, 'edit']);
-      Route::post('update', [UserController::class, 'update']);
-      // Route::get('destroy/{id}', [UserController::class,'destroy']);
-      Route::get('status/{id}', [UserController::class, 'status']);
+      Route::group(['prefix' => 'roles'], function () {
+            Route::get('/', [RoleController::class, 'index']);
+            Route::post('data', [RoleController::class, 'getData'])->name('role.data');
+            Route::get('create', [RoleController::class, 'create']);
+            Route::post('store', [RoleController::class, 'store']);
+            Route::get('edit/{id}', [RoleController::class, 'edit']);
+            Route::post('update', [RoleController::class, 'update']);
+      });
+
+      Route::group(['prefix' => 'users'], function () {
+            Route::get('/', [UserController::class, 'index']);
+            Route::post('data', [UserController::class, 'getData'])->name('user.data');
+            Route::get('create', [UserController::class, 'create']);
+            Route::post('store', [UserController::class, 'store']);
+            Route::get('edit/{id}', [UserController::class, 'edit']);
+            Route::post('update', [UserController::class, 'update']);
+            // Route::get('destroy/{id}', [UserController::class,'destroy']);
+            Route::get('status/{id}', [UserController::class, 'status']);
+      });
 });
