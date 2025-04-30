@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CameraController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -116,5 +117,18 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('update', [UserController::class, 'update']);
             // Route::get('destroy/{id}', [UserController::class,'destroy']);
             Route::get('status/{id}', [UserController::class, 'status']);
+      });
+
+      Route::group(['prefix' => 'cameras'], function () {
+            Route::get('/', [CameraController::class, 'index']);
+            Route::post('data', [CameraController::class, 'getData'])->name('camera.data');
+            Route::get('status-counts', [CameraController::class, 'getStatusCount']);
+            Route::get('create', [CameraController::class, 'create']);
+            Route::post('store', [CameraController::class, 'store']);
+            Route::get('edit/{id}', [CameraController::class, 'edit']);
+            Route::get('view/{id}', [CameraController::class, 'view']);
+            Route::post('update', [CameraController::class, 'update']);
+            Route::get('destroy/{id}', [CameraController::class,'destroy']);
+            Route::get('status/{id}', [CameraController::class, 'status']);
       });
 });

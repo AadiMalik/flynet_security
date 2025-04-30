@@ -23,7 +23,7 @@
             <div class="col p-md-0">
                   <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{url('list-camera')}}">My Camera</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('cameras')}}">Cameras</a></li>
                         <li class="breadcrumb-item active"><a href="javascript:void(0)">View Camera</a></li>
                   </ol>
             </div>
@@ -38,18 +38,23 @@
                                     <h4 class="card-title mb-0">View Camera</h4>
                               </div>
                               <div class="card-body">
-                                    <iframe style="width: 100%; height: 400px;"
-                                          src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                          title="YouTube video player"
-                                          frameborder="0"
-                                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                          referrerpolicy="strict-origin-when-cross-origin"
-                                          allowfullscreen>
-                                    </iframe>
+                                    @if($camera->protocol === 'RTSP')
+                                    <video style="width: 100%; height: 400px;" controls autoplay>
+                                          <source src="{{ $camera->stream_url }}" type="video/mp4">
+                                          Your browser does not support the video tag.
+                                    </video>
+                                    @elseif($camera->protocol === 'P2P')
+                                    <img src="{{ $camera->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
+                                    @elseif($camera->protocol === 'RTMP')
+                                    <video style="width: 100%; height: 400px;" controls autoplay>
+                                          <source src="{{ $camera->stream_url }}" type="application/x-mpegURL">
+                                          Your browser does not support the video tag.
+                                    </video>
+                                    @endif
                                     <div class="caption">
-                                          🔴 Venice V Hotel Live · Beach Live Camera · Los Angeles Live Stream <a class="btn btn-primary btn-md m-1" href="javascript:void(0)">
-                                          <i class="fa fa-download"></i> Save Video
-                                    </a>
+                                          🔴 {{$camera->name??''}} <a class="btn btn-primary btn-md m-1" href="javascript:void(0)">
+                                                <i class="fa fa-download"></i> Save Video
+                                          </a>
                                     </div>
 
                               </div>

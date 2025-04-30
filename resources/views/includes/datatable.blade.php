@@ -26,7 +26,7 @@
             initDataTable{{$variable}}()
         });
     })
-    function initDataTable{{$variable}}(){
+    function initDataTable{{$variable}}(status = null){
         {{$variable}}   = $("#{{$class}}").DataTable(
         {
             processing: true,
@@ -54,6 +54,7 @@
                     "start_date": $('#start_date').val(),
                     "end_date": $('#end_date').val(),
                     @endisset
+                    "status": status
                 }
             },
             @isset($footerCallback)
