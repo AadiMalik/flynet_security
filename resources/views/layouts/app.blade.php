@@ -315,10 +315,10 @@
                             <i class="fa fa-camera menu-icon"></i><span class="nav-text">Cameras</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-camera')}}">List</a></li>
-                            <li><a href="{{url('camera/create')}}">Add New</a></li>
-                            <li><a href="{{url('camera/view')}}">View</a></li>
-                            <li><a href="{{url('camera/map')}}">Map</a></li>
+                            <li><a href="{{url('cameras')}}">List</a></li>
+                            <li><a href="{{url('cameras/create')}}">Add New</a></li>
+                            <!-- <li><a href="{{url('cameras/view')}}">View</a></li> -->
+                            <!-- <li><a href="{{url('camera/map')}}">Map</a></li> -->
                         </ul>
                     </li>
                     <li>
