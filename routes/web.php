@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\CameraController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -119,6 +120,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('status/{id}', [UserController::class, 'status']);
       });
 
+      // Cameras
       Route::group(['prefix' => 'cameras'], function () {
             Route::get('/', [CameraController::class, 'index']);
             Route::post('data', [CameraController::class, 'getData'])->name('camera.data');
@@ -130,5 +132,18 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('update', [CameraController::class, 'update']);
             Route::get('destroy/{id}', [CameraController::class,'destroy']);
             Route::get('status/{id}', [CameraController::class, 'status']);
+      });
+
+      // Alarms
+      Route::group(['prefix' => 'alarms'], function () {
+            Route::get('/', [AlarmController::class, 'index']);
+            Route::post('data', [AlarmController::class, 'getData'])->name('alarm.data');
+            Route::get('create', [AlarmController::class, 'create']);
+            Route::post('store', [AlarmController::class, 'store']);
+            Route::get('edit/{id}', [AlarmController::class, 'edit']);
+            Route::get('view/{id}', [AlarmController::class, 'view']);
+            Route::post('update', [AlarmController::class, 'update']);
+            Route::get('destroy/{id}', [AlarmController::class,'destroy']);
+            Route::get('status/{id}', [AlarmController::class, 'status']);
       });
 });

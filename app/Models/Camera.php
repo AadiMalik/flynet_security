@@ -43,4 +43,9 @@ class Camera extends Model
     {
         return Carbon::parse($value)->format('d-m-Y H:i:s');
     }
+
+    public function alarms()
+    {
+        return $this->belongsToMany(Alarm::class);
+    }
 }

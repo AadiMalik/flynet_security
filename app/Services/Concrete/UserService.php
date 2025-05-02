@@ -44,6 +44,9 @@ class UserService
         return $data;
     }
 
+    public function allUser(){
+        return $this->model_user->getModel()::get();
+    }
     public function save($obj)
     {
         if ($obj['id'] != null && $obj['id'] != '') {

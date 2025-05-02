@@ -72,6 +72,10 @@ class CameraService
             ];
       }
 
+      public function allActiveCamera()
+      {
+            return $this->model_camera->getModel()::where('is_active',1)->get();
+      }
 
       public function save($obj)
       {

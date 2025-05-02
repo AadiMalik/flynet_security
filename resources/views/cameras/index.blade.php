@@ -207,6 +207,22 @@
                                                 <tbody>
 
                                                 </tbody>
+                                                <tfoot>
+                                                      <tr>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">IP</th>
+                                                            <th scope="col">Protocol</th>
+                                                            <th scope="col">Manufacturer</th>
+                                                            <th scope="col">Stream URL</th>
+                                                            <th scope="col">Location</th>
+                                                            <th scope="col">Longitude</th>
+                                                            <th scope="col">Latitude</th>
+                                                            <th scope="col">Active</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Created Date</th>
+                                                            <th scope="col">Action</th>
+                                                      </tr>
+                                                </tfoot>
                                           </table>
                                     </div>
                               </div>

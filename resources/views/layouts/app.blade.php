@@ -18,6 +18,8 @@
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     @yield('css')
 
 </head>
@@ -317,8 +319,6 @@
                         <ul aria-expanded="false">
                             <li><a href="{{url('cameras')}}">List</a></li>
                             <li><a href="{{url('cameras/create')}}">Add New</a></li>
-                            <!-- <li><a href="{{url('cameras/view')}}">View</a></li> -->
-                            <!-- <li><a href="{{url('camera/map')}}">Map</a></li> -->
                         </ul>
                     </li>
                     <li>
@@ -326,9 +326,8 @@
                             <i class="fas fa-bell menu-icon"></i><span class="nav-text">Alarms</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-alarm')}}">List</a></li>
-                            <li><a href="{{url('alarm/create')}}">Add New</a></li>
-                            <li><a href="{{url('alarm/view')}}">View</a></li>
+                            <li><a href="{{url('alarms')}}">List</a></li>
+                            <li><a href="{{url('alarms/create')}}">Add New</a></li>
                         </ul>
                     </li>
 
@@ -656,6 +655,7 @@
     <script src="{{asset('assets/plugins/validation/jquery.validate-init.js')}}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     @yield('js')
 
