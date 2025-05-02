@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\CameraController;
+use App\Http\Controllers\MosaicController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -27,8 +28,8 @@ Route::view('my-camera-view', 'my/my_camera_view');
 Route::view('my-patrols', 'my/my_patrols');
 Route::view('my-patrol-view', 'my/my_patrol_view');
 
-Route::view('my-mosaics', 'my/my_mosaics');
-Route::view('my-mosaic-view', 'my/my_mosaic_view');
+// Route::view('my-mosaics', 'my/my_mosaics');
+// Route::view('my-mosaic-view', 'my/my_mosaic_view');
 
 Route::view('my-alarms', 'my/my_alarms');
 
@@ -145,5 +146,18 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('update', [AlarmController::class, 'update']);
             Route::get('destroy/{id}', [AlarmController::class,'destroy']);
             Route::get('status/{id}', [AlarmController::class, 'status']);
+      });
+
+      // Mosaic
+      Route::group(['prefix' => 'mosaics'], function () {
+            Route::get('/', [MosaicController::class, 'index']);
+            Route::post('data', [MosaicController::class, 'getData'])->name('mosaic.data');
+            Route::get('create', [MosaicController::class, 'create']);
+            Route::post('store', [MosaicController::class, 'store']);
+            Route::get('edit/{id}', [MosaicController::class, 'edit']);
+            Route::get('view/{id}', [MosaicController::class, 'view']);
+            Route::post('update', [MosaicController::class, 'update']);
+            Route::get('destroy/{id}', [MosaicController::class,'destroy']);
+            Route::get('status/{id}', [MosaicController::class, 'status']);
       });
 });

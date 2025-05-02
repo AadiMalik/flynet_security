@@ -48,4 +48,9 @@ class Camera extends Model
     {
         return $this->belongsToMany(Alarm::class);
     }
+
+    public function mosaics()
+    {
+        return $this->belongsToMany(Mosaic::class);
+    }
 }

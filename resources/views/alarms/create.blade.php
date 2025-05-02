@@ -59,7 +59,7 @@
                                                       <div class="form-group">
                                                             <label class="col-form-label" for="users">Users <span class="text-danger">*</span>
                                                             </label>
-                                                            <select class="form-control" name="users[]" id="users" multiple>
+                                                            <select class="form-control" name="users[]" id="users" multiple required>
                                                                   @foreach($users as $item)
                                                                   <option value="{{$item->id}}" {{ isset($alarm) && $alarm->users->contains($item->id) ? 'selected' : '' }}>{{$item->name}} ({{$item->email}})</option>
                                                                   @endforeach
@@ -73,7 +73,7 @@
                                                       <div class="form-group">
                                                             <label class="col-form-label" for="cameras">Cameras <span class="text-danger">*</span>
                                                             </label>
-                                                            <select class="form-control" name="cameras[]" id="cameras" multiple>
+                                                            <select class="form-control" name="cameras[]" id="cameras" multiple required>
                                                                   @foreach($cameras as $item)
                                                                   <option value="{{$item->id}}" {{ isset($alarm) && $alarm->cameras->contains($item->id) ? 'selected' : '' }}>{{$item->name}}</option>
                                                                   @endforeach
