@@ -336,8 +336,8 @@
                             <i class="fas fa-users menu-icon"></i><span class="nav-text">Groups</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-group')}}">List</a></li>
-                            <li><a href="{{url('group/create')}}">Add New</a></li>
+                            <li><a href="{{url('groups')}}">List</a></li>
+                            <li><a href="{{url('groups/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>
@@ -381,8 +381,8 @@
                             <i class="fas fa-video menu-icon"></i><span class="nav-text">Patrols</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-patrol')}}">List</a></li>
-                            <li><a href="{{url('patrol/create')}}">Add New</a></li>
+                            <li><a href="{{url('patrols')}}">List</a></li>
+                            <li><a href="{{url('patrols/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li class="nav-label">Contols</li>

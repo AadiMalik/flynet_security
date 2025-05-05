@@ -54,4 +54,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Mosaic::class);
     }
+
+    public function patrols()
+    {
+        return $this->belongsToMany(Patrol::class);
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
 }

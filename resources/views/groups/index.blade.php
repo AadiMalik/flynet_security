@@ -111,7 +111,7 @@
             <div class="col p-md-0">
                   <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Patrols</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Groups</a></li>
                   </ol>
             </div>
       </div>
@@ -122,22 +122,23 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4 class="card-title mb-0">Patrols</h4>
-                                    <a class="btn btn-primary btn-md m-1" href="{{ url('patrols/create') }}">
-                                          <i class="fa fa-plus text-white mr-2"></i> New Patrol
+                                    <h4 class="card-title mb-0">Groups</h4>
+                                    <a class="btn btn-primary btn-md m-1" href="{{ url('groups/create') }}">
+                                          <i class="fa fa-plus text-white mr-2"></i> New Group
                                     </a>
                               </div>
                               <div class="card-body">
                                     <div class="table-responsive">
-                                          <table id="patrol_table" class="table table-striped table-bordered zero-configuration">
+                                          <table id="group_table" class="table table-striped table-bordered zero-configuration">
                                                 <thead>
                                                       <tr>
                                                             <th>Name</th>
+                                                            <th>Cameras</th>
                                                             <th>Users</th>
-                                                            <th>Mosaics</th>
-                                                            <th>Patrol Time</th>
-                                                            <th>Created Date</th>
+                                                            <th>Default</th>
                                                             <th>Active</th>
+                                                            <th>Comment</th>
+                                                            <th>Created Date</th>
                                                             <th>Action</th>
                                                       </tr>
                                                 </thead>
@@ -145,15 +146,14 @@
 
                                                 </tbody>
                                                 <tfoot>
-                                                      <tr>
-                                                            <th>Name</th>
-                                                            <th>Cameras</th>
-                                                            <th>Users</th>
-                                                            <th>Patrol Time</th>
-                                                            <th>Created Date</th>
-                                                            <th>Active</th>
-                                                            <th>Action</th>
-                                                      </tr>
+                                                      <th>Name</th>
+                                                      <th>Cameras</th>
+                                                      <th>Users</th>
+                                                      <th>Default</th>
+                                                      <th>Active</th>
+                                                      <th>Comment</th>
+                                                      <th>Created Date</th>
+                                                      <th>Action</th>
                                                 </tfoot>
                                           </table>
                                     </div>
@@ -172,17 +172,18 @@
 @include('includes.datatable', [
 'columns' => "
 {data: 'name' , name: 'name'},
+{data: 'cameras' , name: 'cameras', 'sortable': false , searchable: false},
 {data: 'users' , name: 'users', 'sortable': false , searchable: false},
-{data: 'mosaics' , name: 'mosaics', 'sortable': false , searchable: false},
-{data: 'patrol_time' , name: 'patrol_time'},
-{data: 'created_at' , name: 'created_at'},
+{data: 'default' , name: 'default' , 'sortable': false , searchable: false},
 {data: 'active' , name: 'active' , 'sortable': false , searchable: false},
+{data: 'comment' , name: 'comment'},
+{data: 'created_at' , name: 'created_at'},
 {data: 'action' , name: 'action' , 'sortable': false , searchable: false},",
-'route' => 'patrols/data',
+'route' => 'groups/data',
 'buttons' => false,
 'pageLength' => 10,
-'class' => 'patrol_table',
-'variable' => 'patrol_table',
+'class' => 'group_table',
+'variable' => 'group_table',
 ])
 
 <script>
@@ -190,7 +191,7 @@
             let id = $(this).data('id');
 
             $.ajax({
-                  url: "{{url('patrols/status')}}" + "/" + id,
+                  url: "{{url('groups/status')}}" + "/" + id,
                   method: 'GET',
                   headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -199,7 +200,7 @@
                         console.log(data);
                         if (data.Success) {
                               toastr.success(data.Message);
-                              initDataTablepatrol_table();
+                              initDataTablegroup_table();
                         } else {
                               toastr.error(data.Message);
                         }
@@ -210,12 +211,12 @@
             });
       });
 
-      $(document).on('click', '.delete-patrol', function() {
+      $(document).on('click', '.delete-group', function() {
             let id = $(this).data('id');
-            if (!confirm('Are you sure to delete this patrol?')) return;
+            if (!confirm('Are you sure to delete this group?')) return;
 
             $.ajax({
-                  url: "{{url('patrols/destroy')}}" + "/" + id,
+                  url: "{{url('groups/destroy')}}" + "/" + id,
                   method: 'GET',
                   headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -223,7 +224,7 @@
                   success: function(data) {
                         if (data.Success) {
                               toastr.success(data.Message);
-                              initDataTablepatrol_table();
+                              initDataTablegroup_table();
                         } else {
                               toastr.error(data.Message);
                         }

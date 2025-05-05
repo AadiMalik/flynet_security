@@ -7,15 +7,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Mosaic extends Model
+class Group extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
-        'type',
-        'no_of_cameras',
+        'comment',
+        'default',
+        'external_default',
         'is_active',
+        'panic_alert',
+        'view_recording',
+        'enable_chat',
+        'panic_notification',
+        'analytical_notification',
+        'offline_notification',
         'createdby_id',
         'updatedby_id',
         'deletedby_id'
@@ -34,10 +41,5 @@ class Mosaic extends Model
     public function cameras()
     {
         return $this->belongsToMany(Camera::class);
-    }
-
-    public function patrols()
-    {
-        return $this->belongsToMany(Patrol::class);
     }
 }

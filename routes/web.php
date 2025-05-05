@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\CameraController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MosaicController;
+use App\Http\Controllers\PatrolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -25,8 +27,8 @@ Route::view('dashboard', 'home');
 Route::view('my-cameras', 'my/my_cameras');
 Route::view('my-camera-view', 'my/my_camera_view');
 
-Route::view('my-patrols', 'my/my_patrols');
-Route::view('my-patrol-view', 'my/my_patrol_view');
+// Route::view('my-patrols', 'my/my_patrols');
+// Route::view('my-patrol-view', 'my/my_patrol_view');
 
 // Route::view('my-mosaics', 'my/my_mosaics');
 // Route::view('my-mosaic-view', 'my/my_mosaic_view');
@@ -46,8 +48,8 @@ Route::view('list-alarm', 'alarm/index');
 Route::view('alarm/create', 'alarm/create');
 Route::view('alarm/view', 'alarm/view');
 
-Route::view('list-group', 'group/index');
-Route::view('group/create', 'group/create');
+// Route::view('list-group', 'group/index');
+// Route::view('group/create', 'group/create');
 
 // Route::view('list-user', 'users/index');
 // Route::view('user/create', 'users/create');
@@ -159,5 +161,31 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('update', [MosaicController::class, 'update']);
             Route::get('destroy/{id}', [MosaicController::class,'destroy']);
             Route::get('status/{id}', [MosaicController::class, 'status']);
+      });
+
+      // Patrol
+      Route::group(['prefix' => 'patrols'], function () {
+            Route::get('/', [PatrolController::class, 'index']);
+            Route::post('data', [PatrolController::class, 'getData'])->name('patrol.data');
+            Route::get('create', [PatrolController::class, 'create']);
+            Route::post('store', [PatrolController::class, 'store']);
+            Route::get('edit/{id}', [PatrolController::class, 'edit']);
+            Route::get('view/{id}', [PatrolController::class, 'view']);
+            Route::post('update', [PatrolController::class, 'update']);
+            Route::get('destroy/{id}', [PatrolController::class,'destroy']);
+            Route::get('status/{id}', [PatrolController::class, 'status']);
+      });
+
+      // Group
+      Route::group(['prefix' => 'groups'], function () {
+            Route::get('/', [GroupController::class, 'index']);
+            Route::post('data', [GroupController::class, 'getData'])->name('group.data');
+            Route::get('create', [GroupController::class, 'create']);
+            Route::post('store', [GroupController::class, 'store']);
+            Route::get('edit/{id}', [GroupController::class, 'edit']);
+            Route::get('view/{id}', [GroupController::class, 'view']);
+            Route::post('update', [GroupController::class, 'update']);
+            Route::get('destroy/{id}', [GroupController::class,'destroy']);
+            Route::get('status/{id}', [GroupController::class, 'status']);
       });
 });

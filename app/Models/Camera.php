@@ -53,4 +53,9 @@ class Camera extends Model
     {
         return $this->belongsToMany(Mosaic::class);
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
 }

@@ -3,24 +3,24 @@
 namespace App\Services\Concrete;
 
 use App\Repository\Repository;
-use App\Models\Mosaic;
+use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
-class MosaicService
+class GroupService
 {
       // initialize protected model variables
-      protected $model_mosaic;
+      protected $model_group;
 
       public function __construct()
       {
             // set the model
-            $this->model_mosaic = new Repository(new Mosaic);
+            $this->model_group = new Repository(new Group);
       }
 
-      public function getMosaicSource($data)
+      public function getGroupSource($data)
       {
-            $model = $this->model_mosaic->getModel()::with([
+            $model = $this->model_group->getModel()::with([
                   'users',
                   'cameras'
             ]);
@@ -32,6 +32,9 @@ class MosaicService
                   ->addColumn('cameras', function ($item) {
                         return $item->cameras ? $item->cameras->count() : 0;
                   })
+                  ->addColumn('default', function ($item) {
+                        return ($item->default==1)?"<span class='fas fa-check text-success'></span>":"<span class='fas fa-close text-danger'></span>";
+                  })
                   ->addColumn('active', function ($item) {
                         $checked = $item->is_active ? 'checked' : '';
                         return "<label class='switch'>
@@ -41,41 +44,41 @@ class MosaicService
                   })
                   ->addColumn('action', function ($item) {
                         $action_column = '';
-                        $edit_column    = "<a class='btn btn-warning btn-sm mr-2' href='mosaics/edit/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-edit'></i>Edit</a>";
-                        // $view_column    = "<a class='btn btn-info btn-sm mr-2' href='mosaics/view/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-eye'></i>View</a>";
+                        $edit_column    = "<a class='btn btn-warning btn-sm mr-2' href='groups/edit/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-edit'></i>Edit</a>";
+                        // $view_column    = "<a class='btn btn-info btn-sm mr-2' href='groups/view/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-eye'></i>View</a>";
                         $delete_column = "<button class='btn btn-danger btn-sm delete-mosaic' data-id='{$item->id}'><i class='fa fa-trash'></i> Delete</button>";
-                        // if(Auth::user()->can('mosaics_edit'))
+                        // if(Auth::user()->can('groups_edit'))
                         $action_column .= $edit_column;
 
-                        // if(Auth::user()->can('mosaics_view'))
+                        // if(Auth::user()->can('groups_view'))
                         // $action_column .= $view_column;
 
-                        // if(Auth::user()->can('mosaics_delete'))
+                        // if(Auth::user()->can('groups_delete'))
                         $action_column .= $delete_column;
 
 
                         return $action_column;
                   })
-                  ->rawColumns(['active', 'action'])
+                  ->rawColumns(['users','cameras','default','active', 'action'])
                   ->make(true);
             return $data;
       }
-      public function allActiveMosaic()
+      public function allActiveGroup()
       {
-            return $this->model_mosaic->getModel()::where('is_active',1)->get();
+            return $this->model_group->getModel()::where('is_active',1)->get();
       }
 
       public function save($obj)
       {
             if ($obj['id'] != null && $obj['id'] != '') {
                   $obj['updatedby_id'] = Auth::user()->id;
-                  $this->model_mosaic->update($obj, $obj['id']);
-                  $saved_obj = $this->model_mosaic->find($obj['id']);
+                  $this->model_group->update($obj, $obj['id']);
+                  $saved_obj = $this->model_group->find($obj['id']);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->cameras()->sync($obj['cameras']);
             } else {
                   $obj['createdby_id'] = Auth::user()->id;
-                  $saved_obj = $this->model_mosaic->create($obj);
+                  $saved_obj = $this->model_group->create($obj);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->cameras()->sync($obj['cameras']);
             }
@@ -88,7 +91,7 @@ class MosaicService
 
       public function getById($id)
       {
-            return $this->model_mosaic->getModel()::with([
+            return $this->model_group->getModel()::with([
                   'users',
                   'cameras'
             ])->findOrFail($id);
@@ -96,26 +99,26 @@ class MosaicService
 
       public function deleteById($id)
       {
-            $mosaic = $this->model_mosaic->getModel()::findOrFail($id);
+            $group = $this->model_group->getModel()::findOrFail($id);
             $obj = [
                   'deletedby_id' => Auth::user()->id
             ];
-            $this->model_mosaic->update($obj, $id);
-            $mosaic->delete();
+            $this->model_group->update($obj, $id);
+            $group->delete();
             return true;
       }
 
       //status
       public function updateStatusById($id)
       {
-            $mosaic = $this->model_mosaic->getModel()::findOrFail($id);
+            $group = $this->model_group->getModel()::findOrFail($id);
             $is_active = 1;
-            if ($mosaic->is_active == 1) {
+            if ($group->is_active == 1) {
                   $is_active = 0;
             }
-            $mosaic->is_active = $is_active;
-            $mosaic->updatedby_id = Auth::user()->id;
-            $mosaic->update();
+            $group->is_active = $is_active;
+            $group->updatedby_id = Auth::user()->id;
+            $group->update();
 
             return true;
       }

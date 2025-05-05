@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Mosaic extends Model
+class Patrol extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
-        'type',
-        'no_of_cameras',
+        'patrol_time',
         'is_active',
         'createdby_id',
         'updatedby_id',
@@ -31,13 +30,8 @@ class Mosaic extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function cameras()
+    public function mosaics()
     {
-        return $this->belongsToMany(Camera::class);
-    }
-
-    public function patrols()
-    {
-        return $this->belongsToMany(Patrol::class);
+        return $this->belongsToMany(Mosaic::class);
     }
 }

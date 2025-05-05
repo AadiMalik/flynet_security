@@ -3,34 +3,34 @@
 namespace App\Services\Concrete;
 
 use App\Repository\Repository;
-use App\Models\Mosaic;
+use App\Models\Patrol;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
-class MosaicService
+class PatrolService
 {
       // initialize protected model variables
-      protected $model_mosaic;
+      protected $model_patrol;
 
       public function __construct()
       {
             // set the model
-            $this->model_mosaic = new Repository(new Mosaic);
+            $this->model_patrol = new Repository(new Patrol);
       }
 
-      public function getMosaicSource($data)
+      public function getPatrolSource($data)
       {
-            $model = $this->model_mosaic->getModel()::with([
+            $model = $this->model_patrol->getModel()::with([
                   'users',
-                  'cameras'
+                  'mosaics'
             ]);
 
             $data = DataTables::of($model)
                   ->addColumn('users', function ($item) {
                         return $item->users ? $item->users->count() : 0;
                   })
-                  ->addColumn('cameras', function ($item) {
-                        return $item->cameras ? $item->cameras->count() : 0;
+                  ->addColumn('mosaics', function ($item) {
+                        return $item->mosaics ? $item->mosaics->count() : 0;
                   })
                   ->addColumn('active', function ($item) {
                         $checked = $item->is_active ? 'checked' : '';
@@ -41,43 +41,40 @@ class MosaicService
                   })
                   ->addColumn('action', function ($item) {
                         $action_column = '';
-                        $edit_column    = "<a class='btn btn-warning btn-sm mr-2' href='mosaics/edit/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-edit'></i>Edit</a>";
-                        // $view_column    = "<a class='btn btn-info btn-sm mr-2' href='mosaics/view/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-eye'></i>View</a>";
-                        $delete_column = "<button class='btn btn-danger btn-sm delete-mosaic' data-id='{$item->id}'><i class='fa fa-trash'></i> Delete</button>";
-                        // if(Auth::user()->can('mosaics_edit'))
+                        $edit_column    = "<a class='btn btn-warning btn-sm mr-2' href='patrols/edit/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-edit'></i>Edit</a>";
+                        // $view_column    = "<a class='btn btn-info btn-sm mr-2' href='patrols/view/" . $item->id . "'><i title='Add' class='nav-icon mr-2 fa fa-eye'></i>View</a>";
+                        $delete_column = "<button class='btn btn-danger btn-sm delete-patrol' data-id='{$item->id}'><i class='fa fa-trash'></i> Delete</button>";
+                        // if(Auth::user()->can('patrols_edit'))
                         $action_column .= $edit_column;
 
-                        // if(Auth::user()->can('mosaics_view'))
+                        // if(Auth::user()->can('patrols_view'))
                         // $action_column .= $view_column;
 
-                        // if(Auth::user()->can('mosaics_delete'))
+                        // if(Auth::user()->can('patrols_delete'))
                         $action_column .= $delete_column;
 
 
                         return $action_column;
                   })
-                  ->rawColumns(['active', 'action'])
+                  ->rawColumns(['users','mosaics','active', 'action'])
                   ->make(true);
             return $data;
       }
-      public function allActiveMosaic()
-      {
-            return $this->model_mosaic->getModel()::where('is_active',1)->get();
-      }
+
 
       public function save($obj)
       {
             if ($obj['id'] != null && $obj['id'] != '') {
                   $obj['updatedby_id'] = Auth::user()->id;
-                  $this->model_mosaic->update($obj, $obj['id']);
-                  $saved_obj = $this->model_mosaic->find($obj['id']);
+                  $this->model_patrol->update($obj, $obj['id']);
+                  $saved_obj = $this->model_patrol->find($obj['id']);
                   $saved_obj->users()->sync($obj['users']);
-                  $saved_obj->cameras()->sync($obj['cameras']);
+                  $saved_obj->mosaics()->sync($obj['mosaics']);
             } else {
                   $obj['createdby_id'] = Auth::user()->id;
-                  $saved_obj = $this->model_mosaic->create($obj);
+                  $saved_obj = $this->model_patrol->create($obj);
                   $saved_obj->users()->sync($obj['users']);
-                  $saved_obj->cameras()->sync($obj['cameras']);
+                  $saved_obj->mosaics()->sync($obj['mosaics']);
             }
 
             if (!$saved_obj)
@@ -88,34 +85,34 @@ class MosaicService
 
       public function getById($id)
       {
-            return $this->model_mosaic->getModel()::with([
+            return $this->model_patrol->getModel()::with([
                   'users',
-                  'cameras'
+                  'mosaics'
             ])->findOrFail($id);
       }
 
       public function deleteById($id)
       {
-            $mosaic = $this->model_mosaic->getModel()::findOrFail($id);
+            $patrol = $this->model_patrol->getModel()::findOrFail($id);
             $obj = [
                   'deletedby_id' => Auth::user()->id
             ];
-            $this->model_mosaic->update($obj, $id);
-            $mosaic->delete();
+            $this->model_patrol->update($obj, $id);
+            $patrol->delete();
             return true;
       }
 
       //status
       public function updateStatusById($id)
       {
-            $mosaic = $this->model_mosaic->getModel()::findOrFail($id);
+            $patrol = $this->model_patrol->getModel()::findOrFail($id);
             $is_active = 1;
-            if ($mosaic->is_active == 1) {
+            if ($patrol->is_active == 1) {
                   $is_active = 0;
             }
-            $mosaic->is_active = $is_active;
-            $mosaic->updatedby_id = Auth::user()->id;
-            $mosaic->update();
+            $patrol->is_active = $is_active;
+            $patrol->updatedby_id = Auth::user()->id;
+            $patrol->update();
 
             return true;
       }
