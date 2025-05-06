@@ -64,17 +64,26 @@ class PatrolService
 
       public function save($obj)
       {
+            $user = Auth::user();
             if ($obj['id'] != null && $obj['id'] != '') {
-                  $obj['updatedby_id'] = Auth::user()->id;
+                  $obj['updatedby_id'] = $user->id;
                   $this->model_patrol->update($obj, $obj['id']);
                   $saved_obj = $this->model_patrol->find($obj['id']);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->mosaics()->sync($obj['mosaics']);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} update patrol detail {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+                  newActivity($message);
             } else {
-                  $obj['createdby_id'] = Auth::user()->id;
+                  $obj['createdby_id'] = $user->id;
                   $saved_obj = $this->model_patrol->create($obj);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->mosaics()->sync($obj['mosaics']);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} create new patrol {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+                  newActivity($message);
             }
 
             if (!$saved_obj)

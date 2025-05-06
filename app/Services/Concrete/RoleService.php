@@ -54,11 +54,20 @@ class RoleService
 
     public function save($obj)
     {
+        $user = Auth::user();
         if ($obj['id'] != null && $obj['id'] != '') {
             $this->model_role->update($obj, $obj['id']);
             $saved_obj = $this->model_role->find($obj['id']);
+
+            $time = now()->format('h:i A');
+            $message = "$time • {$user->name} update role detail {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+            newActivity($message);
         } else {
             $saved_obj = $this->model_role->create($obj);
+
+            $time = now()->format('h:i A');
+            $message = "$time • {$user->name} create new permission {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+            newActivity($message);
         }
 
         if (!$saved_obj)

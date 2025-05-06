@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AlarmController;
 use App\Http\Controllers\CameraController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MosaicController;
 use App\Http\Controllers\PatrolController;
@@ -70,14 +72,14 @@ Route::view('patrol/create', 'patrols/create');
 
 Route::view('list-reports', 'reports/index');
 
-Route::view('list-customer', 'customers/index');
-Route::view('customer/create', 'customers/create');
+// Route::view('list-customer', 'customers/index');
+// Route::view('customer/create', 'customers/create');
 
 Route::view('access', 'access/index');
 
 Route::view('list-server', 'server/index');
 
-Route::view('activity-log', 'activity_log/index');
+// Route::view('activity-log', 'activity_log/index');
 
 Route::view('list-notification', 'notifications/index');
 Route::view('notification/create', 'notifications/create');
@@ -100,7 +102,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('create', [PermissionController::class, 'create']);
             Route::post('store', [PermissionController::class, 'store']);
             Route::get('edit/{id}', [PermissionController::class, 'edit']);
-            Route::post('update', [PermissionController::class, 'update']);
       });
 
       Route::group(['prefix' => 'roles'], function () {
@@ -109,7 +110,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('create', [RoleController::class, 'create']);
             Route::post('store', [RoleController::class, 'store']);
             Route::get('edit/{id}', [RoleController::class, 'edit']);
-            Route::post('update', [RoleController::class, 'update']);
       });
 
       Route::group(['prefix' => 'users'], function () {
@@ -118,7 +118,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('create', [UserController::class, 'create']);
             Route::post('store', [UserController::class, 'store']);
             Route::get('edit/{id}', [UserController::class, 'edit']);
-            Route::post('update', [UserController::class, 'update']);
             // Route::get('destroy/{id}', [UserController::class,'destroy']);
             Route::get('status/{id}', [UserController::class, 'status']);
       });
@@ -132,7 +131,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [CameraController::class, 'store']);
             Route::get('edit/{id}', [CameraController::class, 'edit']);
             Route::get('view/{id}', [CameraController::class, 'view']);
-            Route::post('update', [CameraController::class, 'update']);
             Route::get('destroy/{id}', [CameraController::class,'destroy']);
             Route::get('status/{id}', [CameraController::class, 'status']);
       });
@@ -145,7 +143,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [AlarmController::class, 'store']);
             Route::get('edit/{id}', [AlarmController::class, 'edit']);
             Route::get('view/{id}', [AlarmController::class, 'view']);
-            Route::post('update', [AlarmController::class, 'update']);
             Route::get('destroy/{id}', [AlarmController::class,'destroy']);
             Route::get('status/{id}', [AlarmController::class, 'status']);
       });
@@ -158,7 +155,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [MosaicController::class, 'store']);
             Route::get('edit/{id}', [MosaicController::class, 'edit']);
             Route::get('view/{id}', [MosaicController::class, 'view']);
-            Route::post('update', [MosaicController::class, 'update']);
             Route::get('destroy/{id}', [MosaicController::class,'destroy']);
             Route::get('status/{id}', [MosaicController::class, 'status']);
       });
@@ -171,7 +167,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [PatrolController::class, 'store']);
             Route::get('edit/{id}', [PatrolController::class, 'edit']);
             Route::get('view/{id}', [PatrolController::class, 'view']);
-            Route::post('update', [PatrolController::class, 'update']);
             Route::get('destroy/{id}', [PatrolController::class,'destroy']);
             Route::get('status/{id}', [PatrolController::class, 'status']);
       });
@@ -184,8 +179,20 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [GroupController::class, 'store']);
             Route::get('edit/{id}', [GroupController::class, 'edit']);
             Route::get('view/{id}', [GroupController::class, 'view']);
-            Route::post('update', [GroupController::class, 'update']);
             Route::get('destroy/{id}', [GroupController::class,'destroy']);
             Route::get('status/{id}', [GroupController::class, 'status']);
+      });
+
+      // Activity log
+      Route::get('activity-log', [ActivityLogController::class, 'index']);
+
+      // Customer
+      Route::group(['prefix' => 'customers'], function () {
+            Route::get('/', [CustomerController::class, 'index']);
+            Route::post('data', [CustomerController::class, 'getData'])->name('customer.data');
+            Route::get('create', [CustomerController::class, 'create']);
+            Route::post('store', [CustomerController::class, 'store']);
+            Route::get('edit/{id}', [CustomerController::class, 'edit']);
+            Route::get('destroy/{id}', [CustomerController::class,'destroy']);
       });
 });

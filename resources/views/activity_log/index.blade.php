@@ -60,104 +60,25 @@
                               </div>
                               <div class="card-body">
                                     <div class="row">
-                                          <div class="col-md-12">
-                                                <h5 style="font-size: 16px;" class="badge badge-primary">April 22, 2025</h5>
+                                          @foreach($activity_logs as $date => $items)
+                                          <div class="col-md-12 mb-4">
+                                                <h5 class="badge badge-primary" style="font-size: 16px;">{{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</h5>
                                                 <ul class="timeline" style="padding: 0px;">
+                                                      @foreach($items as $log)
                                                       <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739599 - Casa Reina Romero Cam 1.1 no aplicativo mobile.</p>
+                                                            <span class="float-right">
+                                                                  <span class="fas fa-clock"></span>
+                                                                  {{ \Carbon\Carbon::parse($log->date . ' ' . $log->time)->diffForHumans() }}
+                                                            </span>
+                                                            <p style="margin-left:30px;">
+                                                                  {{ $log->description }}
+                                                            </p>
                                                       </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">2:48 PM • Napoleon Regalado abriu a câmera 726028 - Casa de Napoleon Regalado Cam1.1 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
+                                                      @endforeach
                                                 </ul>
                                           </div>
-                                          <div class="col-md-12">
-                                                <h5 style="font-size: 16px;" class="badge badge-primary">April 22, 2025</h5>
-                                                <ul class="timeline" style="padding: 0px;">
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739599 - Casa Reina Romero Cam 1.1 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">2:48 PM • Napoleon Regalado abriu a câmera 726028 - Casa de Napoleon Regalado Cam1.1 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                      <li>
-                                                            <span class="float-right"><span class="fas fa-clock"></span> 14 minutes ago</span>
-                                                            <p style="margin-left:30px;">3:24 PM • Reina Romero abriu a câmera 739565 - Casa Reina Romero Cam 1.2 no aplicativo mobile.</p>
-                                                      </li>
-                                                </ul>
-                                          </div>
+                                          @endforeach
+
                                     </div>
                               </div>
                         </div>

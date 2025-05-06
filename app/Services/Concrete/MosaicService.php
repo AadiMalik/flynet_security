@@ -67,17 +67,26 @@ class MosaicService
 
       public function save($obj)
       {
+            $user = Auth::user();
             if ($obj['id'] != null && $obj['id'] != '') {
-                  $obj['updatedby_id'] = Auth::user()->id;
+                  $obj['updatedby_id'] = $user->id;
                   $this->model_mosaic->update($obj, $obj['id']);
                   $saved_obj = $this->model_mosaic->find($obj['id']);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->cameras()->sync($obj['cameras']);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} update mosaic detail {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+                  newActivity($message);
             } else {
-                  $obj['createdby_id'] = Auth::user()->id;
+                  $obj['createdby_id'] = $user->id;
                   $saved_obj = $this->model_mosaic->create($obj);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->cameras()->sync($obj['cameras']);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} create new mosaic {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+                  newActivity($message);
             }
 
             if (!$saved_obj)

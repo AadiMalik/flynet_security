@@ -70,17 +70,26 @@ class GroupService
 
       public function save($obj)
       {
+            $user = Auth::user();
             if ($obj['id'] != null && $obj['id'] != '') {
-                  $obj['updatedby_id'] = Auth::user()->id;
+                  $obj['updatedby_id'] = $user->id;
                   $this->model_group->update($obj, $obj['id']);
                   $saved_obj = $this->model_group->find($obj['id']);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->cameras()->sync($obj['cameras']);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} update group detail {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+                  newActivity($message);
             } else {
-                  $obj['createdby_id'] = Auth::user()->id;
+                  $obj['createdby_id'] = $user->id;
                   $saved_obj = $this->model_group->create($obj);
                   $saved_obj->users()->sync($obj['users']);
                   $saved_obj->cameras()->sync($obj['cameras']);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} create new group {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+                  newActivity($message);
             }
 
             if (!$saved_obj)

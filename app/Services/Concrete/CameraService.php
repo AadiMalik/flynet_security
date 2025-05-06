@@ -79,18 +79,27 @@ class CameraService
 
       public function save($obj)
       {
+            $user = Auth::user();
             if ($obj['id'] != null && $obj['id'] != '') {
                   $camera = $this->model_camera->getModel()::findOrFail($obj['id']);
                   $camera->fill($obj);
                   $obj['stream_url'] = $this->getCameraStreamUrl($camera);
-                  $obj['updatedby_id'] = Auth::user()->id;
+                  $obj['updatedby_id'] = $user->id;
                   $this->model_camera->update($obj, $obj['id']);
                   $saved_obj = $this->model_camera->find($obj['id']);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} update camera detail {$camera->id} - {$camera->name} in the Admin Panel.";
+                  newActivity($message);
             } else {
                   $tempCamera = new Camera($obj);
                   $obj['stream_url'] = $this->getCameraStreamUrl($tempCamera);
-                  $obj['createdby_id'] = Auth::user()->id;
+                  $obj['createdby_id'] = $user->id;
                   $saved_obj = $this->model_camera->create($obj);
+
+                  $time = now()->format('h:i A');
+                  $message = "$time • {$user->name} create new camera {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+                  newActivity($message);
             }
 
             if (!$saved_obj)

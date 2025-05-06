@@ -18,7 +18,8 @@ class PermissionService
         $this->model_permission = new Repository(new Permission);
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         return $this->model_permission->all();
     }
 
@@ -42,11 +43,20 @@ class PermissionService
 
     public function save($obj)
     {
+        $user = Auth::user();
         if ($obj['id'] != null && $obj['id'] != '') {
             $this->model_permission->update($obj, $obj['id']);
             $saved_obj = $this->model_permission->find($obj['id']);
+
+            $time = now()->format('h:i A');
+            $message = "$time • {$user->name} update permission detail {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+            newActivity($message);
         } else {
             $saved_obj = $this->model_permission->create($obj);
+
+            $time = now()->format('h:i A');
+            $message = "$time • {$user->name} create new permission {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+            newActivity($message);
         }
 
         if (!$saved_obj)

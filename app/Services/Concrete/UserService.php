@@ -49,11 +49,20 @@ class UserService
     }
     public function save($obj)
     {
+        $user = Auth::user();
         if ($obj['id'] != null && $obj['id'] != '') {
             $this->model_user->update($obj, $obj['id']);
             $saved_obj = $this->model_user->find($obj['id']);
+
+            $time = now()->format('h:i A');
+            $message = "$time • {$user->name} update user detail {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+            newActivity($message);
         } else {
             $saved_obj = $this->model_user->create($obj);
+
+            $time = now()->format('h:i A');
+            $message = "$time • {$user->name} create new user {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
+            newActivity($message);
         }
 
         if (!$saved_obj)

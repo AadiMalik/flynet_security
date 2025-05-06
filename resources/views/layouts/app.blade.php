@@ -417,8 +417,8 @@
                             <i class="fas fa-user menu-icon"></i><span class="nav-text">Customers</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{url('list-customer')}}">List</a></li>
-                            <li><a href="{{url('customer/create')}}">Add New</a></li>
+                            <li><a href="{{url('customers')}}">List</a></li>
+                            <li><a href="{{url('customers/create')}}">Add New</a></li>
                         </ul>
                     </li>
                     <li>
