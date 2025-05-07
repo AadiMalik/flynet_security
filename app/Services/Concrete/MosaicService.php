@@ -62,7 +62,7 @@ class MosaicService
       }
       public function allActiveMosaic()
       {
-            return $this->model_mosaic->getModel()::where('is_active',1)->get();
+            return $this->model_mosaic->getModel()::where('is_active', 1)->get();
       }
 
       public function save($obj)
@@ -103,6 +103,19 @@ class MosaicService
             ])->findOrFail($id);
       }
 
+      //my mosaics
+      public function myMosaics()
+      {
+            return $this->model_mosaic->getModel()::with([
+                  'users',
+                  'cameras'
+            ])
+                  ->whereHas('users', function ($query) {
+                        $query->where('user_id', auth()->user()->id);
+                  })
+                  ->where('is_active', 1)
+                  ->get();
+      }
       public function deleteById($id)
       {
             $mosaic = $this->model_mosaic->getModel()::findOrFail($id);

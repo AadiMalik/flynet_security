@@ -40,70 +40,55 @@
                               <div class="card-body">
                                     <div class="row">
                                           <div class="col-md-8">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
+                                                @if($camera->protocol === 'RTSP')
+                                                <video style="width: 100%; height: 400px;" controls autoplay>
+                                                      <source src="{{ $camera->stream_url }}" type="video/mp4">
+                                                      Your browser does not support the video tag.
+                                                </video>
+                                                @elseif($camera->protocol === 'P2P')
+                                                <img src="{{ $camera->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
+                                                @elseif($camera->protocol === 'RTMP')
+                                                <video style="width: 100%; height: 400px;" controls autoplay>
+                                                      <source src="{{ $camera->stream_url }}" type="application/x-mpegURL">
+                                                      Your browser does not support the video tag.
+                                                </video>
+                                                @endif
                                                 <div class="caption">
-                                                      🔴 Venice V Hotel Live · Beach Live Camera · Los Angeles Live Stream <a class="btn btn-primary btn-md m-1" href="javascript:void(0)">
+                                                      🔴 {{$camera->name??''}} <a class="btn btn-primary btn-md m-1" href="javascript:void(0)">
                                                             <i class="fa fa-download"></i> Save Video
                                                       </a>
                                                 </div>
 
                                           </div>
                                           <div class="col-md-4">
-                                                <h5>4 Cameras</h5>
+                                                <h5>{{$cameras->count()}} Cameras</h5>
                                                 <div class="row">
                                                       <div class="col-md-12">
                                                             <div class="form-group mb-0">
-                                                                  <div class="input-group">
-                                                                        <input type="search" style=" border-radius: 10px;" class="form-control rounded-start" placeholder="Search" aria-label="Search">
-                                                                        <button class="input-group-text bg-white text-primary rounded-end" style=" border-radius: 10px;">
-                                                                              <i class="fa fa-search"></i>
-                                                                        </button>
-                                                                  </div>
+                                                                  <form method="GET" action="{{ route('my-cameras.view', ['id' => $camera->id]) }}" class="mb-3">
+                                                                        <div class="input-group">
+                                                                              <input type="search" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search cameras..." style="border-radius: 10px;">
+                                                                              <button type="submit" class="input-group-text bg-white text-primary" style="border-radius: 10px;">
+                                                                                    <i class="fa fa-search"></i>
+                                                                              </button>
+                                                                        </div>
+                                                                  </form>
                                                             </div>
                                                       </div>
+                                                      @foreach($cameras as $camera)
                                                       <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-camera-view')}}">
+                                                            <a href="{{ route('my-cameras.view', ['id' => $camera->id]) }}">
                                                                   <div class="row">
                                                                         <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
+                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="{{asset('uploads/cameras/1.jpg')}}">
                                                                         </div>
                                                                         <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Triangulo</b>
+                                                                              <b class="text-black">{{ $camera->name }}</b>
                                                                         </div>
                                                                   </div>
                                                             </a>
                                                       </div>
-                                                      <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-camera-view')}}">
-                                                                  <div class="row">
-                                                                        <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
-                                                                        </div>
-                                                                        <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Triangulo</b>
-                                                                        </div>
-                                                                  </div>
-                                                            </a>
-                                                      </div>
-                                                      <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-camera-view')}}">
-                                                                  <div class="row">
-                                                                        <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
-                                                                        </div>
-                                                                        <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Triangulo</b>
-                                                                        </div>
-                                                                  </div>
-                                                            </a>
-                                                      </div>
+                                                      @endforeach
                                                 </div>
                                           </div>
                                     </div>

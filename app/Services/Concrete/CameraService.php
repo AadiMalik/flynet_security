@@ -74,7 +74,7 @@ class CameraService
 
       public function allActiveCamera()
       {
-            return $this->model_camera->getModel()::where('is_active',1)->get();
+            return $this->model_camera->getModel()::where('is_active', 1)->get();
       }
 
       public function save($obj)
@@ -111,6 +111,15 @@ class CameraService
       public function getById($id)
       {
             return $this->model_camera->getModel()::findOrFail($id);
+      }
+
+      // my cameras
+      public function myCameras()
+      {
+            return $this->model_camera->getModel()::where('is_active', 1)
+            ->select('id', 'name', 'latitude as lat', 'longitude as lng')
+            ->where('createdby_id',Auth()->user()->id)
+                  ->get();
       }
 
       public function deleteById($id)

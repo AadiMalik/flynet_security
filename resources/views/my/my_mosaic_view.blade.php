@@ -39,26 +39,23 @@
                               </div>
                               <div class="card-body">
                                     <div class="row">
+                                          @foreach($mosaic->cameras as $item)
                                           <div class="col-md-6">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
+                                                @if($item->protocol === 'RTSP')
+                                                <video style="width: 100%; height: 400px;" controls autoplay>
+                                                      <source src="{{ $item->stream_url }}" type="video/mp4">
+                                                      Your browser does not support the video tag.
+                                                </video>
+                                                @elseif($item->protocol === 'P2P')
+                                                <img src="{{ $item->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
+                                                @elseif($item->protocol === 'RTMP')
+                                                <video style="width: 100%; height: 400px;" controls autoplay>
+                                                      <source src="{{ $item->stream_url }}" type="application/x-mpegURL">
+                                                      Your browser does not support the video tag.
+                                                </video>
+                                                @endif
                                           </div>
-                                          <div class="col-md-6">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
-                                          </div>
+                                          @endforeach
                                     </div>
                               </div>
                         </div>

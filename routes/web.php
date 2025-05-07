@@ -6,6 +6,8 @@ use App\Http\Controllers\CameraController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MosaicController;
+use App\Http\Controllers\My\MyCameraController;
+use App\Http\Controllers\My\MyMosaicController;
 use App\Http\Controllers\PatrolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -26,8 +28,8 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'auth/login');
 Route::view('dashboard', 'home');
 // My
-Route::view('my-cameras', 'my/my_cameras');
-Route::view('my-camera-view', 'my/my_camera_view');
+// Route::view('my-cameras', 'my/my_cameras');
+// Route::view('my-camera-view', 'my/my_camera_view');
 
 // Route::view('my-patrols', 'my/my_patrols');
 // Route::view('my-patrol-view', 'my/my_patrol_view');
@@ -41,45 +43,12 @@ Route::view('my-videos', 'my/my_videos');
 Route::view('my-video-view', 'my/my_video_view');
 
 
-Route::view('list-camera', 'camera/index');
-Route::view('camera/create', 'camera/create');
-Route::view('camera/view', 'camera/view');
-Route::view('camera/map', 'camera/map');
-
-Route::view('list-alarm', 'alarm/index');
-Route::view('alarm/create', 'alarm/create');
-Route::view('alarm/view', 'alarm/view');
-
-// Route::view('list-group', 'group/index');
-// Route::view('group/create', 'group/create');
-
-// Route::view('list-user', 'users/index');
-// Route::view('user/create', 'users/create');
-// Route::view('user/view', 'users/view');
-
-// Route::view('list-role','roles/index');
-// Route::view('role/create','roles/create');
-// Route::view('role/view','roles/view');
-
-// Route::view('list-permission','permissions/index');
-// Route::view('permission/create','permissions/create');
-
-Route::view('list-mosaic', 'mosaics/index');
-Route::view('mosaic/create', 'mosaics/create');
-
-Route::view('list-patrol', 'patrols/index');
-Route::view('patrol/create', 'patrols/create');
-
 Route::view('list-reports', 'reports/index');
-
-// Route::view('list-customer', 'customers/index');
-// Route::view('customer/create', 'customers/create');
 
 Route::view('access', 'access/index');
 
 Route::view('list-server', 'server/index');
 
-// Route::view('activity-log', 'activity_log/index');
 
 Route::view('list-notification', 'notifications/index');
 Route::view('notification/create', 'notifications/create');
@@ -195,4 +164,17 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('edit/{id}', [CustomerController::class, 'edit']);
             Route::get('destroy/{id}', [CustomerController::class,'destroy']);
       });
+
+      // My cameras
+      Route::get('my-cameras', [MyCameraController::class, 'index'])->name('my-cameras.index');
+      Route::get('my-cameras/view/{id}', [MyCameraController::class, 'view'])->name('my-cameras.view');
+
+      // My Mosaics
+      Route::get('my-mosaics', [MyMosaicController::class, 'index'])->name('my-mosaics.index');
+      Route::get('my-mosaics/view/{id}', [MyMosaicController::class, 'view'])->name('my-mosaics.view');
+
+
+
+
+
 });

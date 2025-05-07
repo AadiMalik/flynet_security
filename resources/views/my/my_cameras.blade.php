@@ -6,7 +6,6 @@
             Content body start
         ***********************************-->
 <div class="content-body">
-
       <div class="row page-titles mx-0">
             <div class="col p-md-0">
                   <ol class="breadcrumb">
@@ -15,7 +14,6 @@
                   </ol>
             </div>
       </div>
-      <!-- row -->
 
       <div class="container-fluid">
             <div class="row">
@@ -26,58 +24,43 @@
                               </div>
                               <div class="card-body">
                                     <div class="row">
+                                          <!-- Map Column -->
                                           <div class="col-md-8">
-                                                <iframe style="width: 100%; height: 400px;" src="https://www.openstreetmap.org/export/embed.html?bbox=2.292292%2C48.857166%2C2.296495%2C48.859723&layer=mapnik&marker=48.858844%2C2.294351"></iframe>
+                                                <div id="cameraMap" style="width: 100%; height: 400px; border-radius: 10px;"></div>
                                           </div>
+
+                                          <!-- Camera List Column -->
                                           <div class="col-md-4">
-                                                <h5>4 Cameras</h5>
+                                                <h5>{{ count($cameras) }} Cameras</h5>
                                                 <div class="row">
                                                       <div class="col-md-12">
                                                             <div class="form-group mb-0">
-                                                                  <div class="input-group">
-                                                                        <input type="search" style=" border-radius: 10px;" class="form-control rounded-start" placeholder="Search" aria-label="Search">
-                                                                        <button class="input-group-text bg-white text-primary rounded-end"  style=" border-radius: 10px;">
-                                                                              <i class="fa fa-search"></i>
-                                                                        </button>
-                                                                  </div>
+                                                                  <form method="GET" action="{{ route('my-cameras.index') }}" class="mb-3">
+                                                                        <div class="input-group">
+                                                                              <input type="search" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search cameras..." style="border-radius: 10px;">
+                                                                              <button type="submit" class="input-group-text bg-white text-primary" style="border-radius: 10px;">
+                                                                                    <i class="fa fa-search"></i>
+                                                                              </button>
+                                                                        </div>
+                                                                  </form>
                                                             </div>
                                                       </div>
+
+                                                      @foreach($cameras as $camera)
                                                       <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-camera-view')}}">
+                                                            <a href="{{ route('my-cameras.view', ['id' => $camera->id]) }}">
                                                                   <div class="row">
                                                                         <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
+                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="{{asset('uploads/cameras/1.jpg')}}">
                                                                         </div>
                                                                         <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Triangulo</b>
+                                                                              <b class="text-black">{{ $camera->name }}</b>
                                                                         </div>
                                                                   </div>
                                                             </a>
                                                       </div>
-                                                      <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-camera-view')}}">
-                                                                  <div class="row">
-                                                                        <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
-                                                                        </div>
-                                                                        <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Triangulo</b>
-                                                                        </div>
-                                                                  </div>
-                                                            </a>
-                                                      </div>
-                                                      <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-camera-view')}}">
-                                                                  <div class="row">
-                                                                        <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
-                                                                        </div>
-                                                                        <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Triangulo</b>
-                                                                        </div>
-                                                                  </div>
-                                                            </a>
-                                                      </div>
+                                                      @endforeach
+
                                                 </div>
                                           </div>
                                     </div>
@@ -86,9 +69,39 @@
                   </div>
             </div>
       </div>
-      <!-- #/ container -->
 </div>
+
 <!--**********************************
             Content body end
         ***********************************-->
+@endsection
+@section('js')
+<!-- Leaflet Map Libraries -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Map Initialization Script -->
+<script type="module">
+      document.addEventListener("DOMContentLoaded", function() {
+            const cameras = <?php echo $cameras; ?>
+
+            // Default center (first camera or fallback)
+            const defaultLat = cameras.length ? cameras[0].lat : 0;
+            const defaultLng = cameras.length ? cameras[0].lng : 0;
+
+            const map = L.map('cameraMap').setView([defaultLat, defaultLng], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            cameras.forEach(camera => {
+                  if (camera.lat && camera.lng) {
+                        L.marker([camera.lat, camera.lng])
+                              .addTo(map)
+                              .bindPopup(`<a href="/my-cameras/view/${camera.id}"><b>${camera.name}</b></a>`);
+                  }
+            });
+      });
+</script>
 @endsection
