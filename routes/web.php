@@ -8,6 +8,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MosaicController;
 use App\Http\Controllers\My\MyCameraController;
 use App\Http\Controllers\My\MyMosaicController;
+use App\Http\Controllers\My\MyPatrolController;
 use App\Http\Controllers\PatrolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -172,6 +173,10 @@ Route::group(['middleware' => ['auth']], function () {
       // My Mosaics
       Route::get('my-mosaics', [MyMosaicController::class, 'index'])->name('my-mosaics.index');
       Route::get('my-mosaics/view/{id}', [MyMosaicController::class, 'view'])->name('my-mosaics.view');
+
+      // My patrols
+      Route::get('my-patrols', [MyPatrolController::class, 'index'])->name('my-patrols.index');
+      Route::get('my-patrols/view/{id}', [MyPatrolController::class, 'view'])->name('my-patrols.view');
 
 
 

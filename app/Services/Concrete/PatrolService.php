@@ -56,7 +56,7 @@ class PatrolService
 
                         return $action_column;
                   })
-                  ->rawColumns(['users','mosaics','active', 'action'])
+                  ->rawColumns(['users', 'mosaics', 'active', 'action'])
                   ->make(true);
             return $data;
       }
@@ -100,6 +100,19 @@ class PatrolService
             ])->findOrFail($id);
       }
 
+      //my patrols
+      public function myPatrols()
+      {
+            return $this->model_patrol->getModel()::with([
+                  'users',
+                  'mosaics'
+            ])
+                  ->whereHas('users', function ($query) {
+                        $query->where('user_id', auth()->user()->id);
+                  })
+                  ->where('is_active', 1)
+                  ->get();
+      }
       public function deleteById($id)
       {
             $patrol = $this->model_patrol->getModel()::findOrFail($id);

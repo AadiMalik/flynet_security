@@ -38,46 +38,39 @@
                                     <h4 class="card-title mb-0">View Patrol</h4>
                               </div>
                               <div class="card-body">
-                                    <div class="row">
-                                          <div class="col-md-6">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
+                                    <div id="mosaic-container">
+                                          <div class="col-md-12">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                      <h4 class="mb-0" id="mosaic-name">{{ $patrol->mosaics[0]->name ?? '' }}</h4>
+                                                      <small><strong>Next switch in: <span id="patrol-timer">{{ $patrol->patrol_time }}</span>s</strong></small>
+                                                </div>
+                                                <br>
                                           </div>
-                                          <div class="col-md-6">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
-                                          </div>
-                                          <div class="col-md-6">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
-                                          </div>
-                                          <div class="col-md-6">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
+
+                                          <div id="mosaic-container">
+                                                @foreach($patrol->mosaics as $index => $mosaic)
+                                                <div class="mosaic-group" style="{{ $index !== 0 ? 'display: none;' : '' }}">
+                                                      <div class="row">
+                                                            @foreach($mosaic->cameras as $camera)
+                                                            <div class="col-md-6">
+                                                                  @if($camera->protocol === 'RTSP')
+                                                                  <video style="width: 100%; height: 400px;" controls autoplay muted>
+                                                                        <source src="{{ $camera->stream_url }}" type="video/mp4">
+                                                                        Your browser does not support the video tag.
+                                                                  </video>
+                                                                  @elseif($camera->protocol === 'P2P')
+                                                                  <img src="{{ $camera->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
+                                                                  @elseif($camera->protocol === 'RTMP')
+                                                                  <video style="width: 100%; height: 400px;" controls autoplay muted>
+                                                                        <source src="{{ $camera->stream_url }}" type="application/x-mpegURL">
+                                                                        Your browser does not support the video tag.
+                                                                  </video>
+                                                                  @endif
+                                                            </div>
+                                                            @endforeach
+                                                      </div>
+                                                </div>
+                                                @endforeach
                                           </div>
                                     </div>
                               </div>
@@ -88,7 +81,53 @@
 </div>
 <!-- #/ container -->
 </div>
+<input type="hidden" id="mosaic-data" value='{{json_encode($patrol->mosaics->pluck("name")->values())}}'>
 <!--**********************************
             Content body end
         ***********************************-->
+@endsection
+@section('js')
+<script>
+      // Collect mosaic groups and names
+      const mosaicGroups = document.querySelectorAll('.mosaic-group');
+      const mosaicNames = JSON.parse($("#mosaic-data").val());
+      console.log(mosaicNames);
+      const patrolTimeSeconds = Number("{{ $patrol->patrol_time }}");
+
+      const mosaicNameEl = document.getElementById('mosaic-name');
+      const timerDisplay = document.getElementById('patrol-timer');
+
+      let currentIndex = 0;
+      let timeLeft = patrolTimeSeconds;
+
+      function showMosaic(index) {
+            // Hide all mosaics
+            mosaicGroups.forEach(group => group.style.display = 'none');
+
+            // Show the selected one
+            mosaicGroups[index].style.display = 'block';
+
+            // Update mosaic name
+            mosaicNameEl.textContent = mosaicNames[index];
+      }
+
+      function switchMosaic() {
+            currentIndex = (currentIndex + 1) % mosaicGroups.length;
+            showMosaic(currentIndex);
+            timeLeft = patrolTimeSeconds;
+      }
+
+      // Initial display
+      showMosaic(currentIndex);
+
+      // Countdown and switch logic
+      setInterval(() => {
+            timeLeft--;
+            if (timeLeft <= 0) {
+                  switchMosaic();
+            }
+            timerDisplay.textContent = timeLeft;
+      }, 1000);
+</script>
+
 @endsection

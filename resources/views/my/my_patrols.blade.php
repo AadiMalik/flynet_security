@@ -22,43 +22,23 @@
                   <div class="col-12">
                         <div class="card">
                               <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4 class="card-title mb-0">My Patrols (2)</h4>
+                                    <h4 class="card-title mb-0">My Patrols ({{$patrols->count()}})</h4>
                               </div>
                               <div class="card-body">
                                     <div class="row">
+                                          @foreach($patrols as $item)
                                           <div class="col-md-3">
-                                                <a href="{{url('my-patrol-view')}}">
+                                                <a href="{{url('my-patrols/view/'.$item->id)}}">
                                                       <div class="card" style="border: 1px solid #4444;">
                                                             <div class="card-body">
-                                                                  <span class="fa fa-list"></span> 2 Mosaics <br>
-                                                                  <span class="fa fa-watch"></span> 30s <br>
-                                                                  <b style="color:#000;">Testing</b>
+                                                                  <span class="fa fa-list"></span> {{$item->mosaics->count()}} Mosaics <br>
+                                                                  <span class="fa fa-watch"></span> {{$item->patrol_time}}s <br>
+                                                                  <b style="color:#000;">{{$item->name??''}}</b>
                                                             </div>
                                                       </div>
                                                 </a>
                                           </div>
-                                          <div class="col-md-3">
-                                                <a href="{{url('my-patrol-view')}}">
-                                                      <div class="card" style="border: 1px solid #4444;">
-                                                            <div class="card-body">
-                                                                  <span class="fa fa-list"></span> 2 Mosaics <br>
-                                                                  <span class="fa fa-watch"></span> 30s <br>
-                                                                  <b style="color:#000;">Testing</b>
-                                                            </div>
-                                                      </div>
-                                                </a>
-                                          </div>
-                                          <div class="col-md-3">
-                                                <a href="{{url('my-patrol-view')}}">
-                                                      <div class="card" style="border: 1px solid #4444;">
-                                                            <div class="card-body">
-                                                                  <span class="fa fa-list"></span> 2 Mosaics <br>
-                                                                  <span class="fa fa-watch"></span> 30s <br>
-                                                                  <b style="color:#000;">Testing</b>
-                                                            </div>
-                                                      </div>
-                                                </a>
-                                          </div>
+                                          @endforeach
                                     </div>
                               </div>
                         </div>
