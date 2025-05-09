@@ -100,6 +100,20 @@ class AlarmService
             ])->findOrFail($id);
       }
 
+      // my alarms
+      public function myAlarms()
+      {
+            return $this->model_alarm->getModel()::with([
+                  'users',
+                  'cameras'
+            ])
+                  ->whereHas('users', function ($query) {
+                        $query->where('user_id', auth()->user()->id);
+                  })
+                  ->where('is_active', 1)
+                  ->get();
+      }
+
       public function deleteById($id)
       {
             $alarm = $this->model_alarm->getModel()::findOrFail($id);

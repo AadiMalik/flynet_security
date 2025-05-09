@@ -6,6 +6,7 @@ use App\Http\Controllers\CameraController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MosaicController;
+use App\Http\Controllers\My\MyAlarmController;
 use App\Http\Controllers\My\MyCameraController;
 use App\Http\Controllers\My\MyMosaicController;
 use App\Http\Controllers\My\MyPatrolController;
@@ -38,7 +39,7 @@ Route::view('dashboard', 'home');
 // Route::view('my-mosaics', 'my/my_mosaics');
 // Route::view('my-mosaic-view', 'my/my_mosaic_view');
 
-Route::view('my-alarms', 'my/my_alarms');
+// Route::view('my-alarms', 'my/my_alarms');
 
 Route::view('my-videos', 'my/my_videos');
 Route::view('my-video-view', 'my/my_video_view');
@@ -177,6 +178,9 @@ Route::group(['middleware' => ['auth']], function () {
       // My patrols
       Route::get('my-patrols', [MyPatrolController::class, 'index'])->name('my-patrols.index');
       Route::get('my-patrols/view/{id}', [MyPatrolController::class, 'view'])->name('my-patrols.view');
+      
+      // My alarms
+      Route::get('my-alarms', [MyAlarmController::class, 'index'])->name('my-alarms.index');
 
 
 
