@@ -3,19 +3,23 @@
 namespace App\Services\Concrete;
 
 use App\Repository\Repository;
-use App\Models\Camera;
+use App\Models\{Camera, cameraRecording};
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\File;
 
 class CameraService
 {
       // initialize protected model variables
       protected $model_camera;
+      protected $model_camera_recording;
 
       public function __construct()
       {
             // set the model
             $this->model_camera = new Repository(new Camera);
+            $this->model_camera_recording = new Repository(new cameraRecording);
       }
 
       public function getCameraSource($data)
@@ -82,20 +86,22 @@ class CameraService
             $user = Auth::user();
             if ($obj['id'] != null && $obj['id'] != '') {
                   $camera = $this->model_camera->getModel()::findOrFail($obj['id']);
-                  $camera->fill($obj);
-                  $obj['stream_url'] = $this->getCameraStreamUrl($camera);
+                  $slug = 'cam_' . $obj['id'];
+                  $obj['slug'] = $slug;
                   $obj['updatedby_id'] = $user->id;
                   $this->model_camera->update($obj, $obj['id']);
                   $saved_obj = $this->model_camera->find($obj['id']);
+                  $this->regenerateMediatmxConfig($saved_obj);
 
                   $time = now()->format('h:i A');
                   $message = "$time • {$user->name} update camera detail {$camera->id} - {$camera->name} in the Admin Panel.";
                   newActivity($message);
             } else {
-                  $tempCamera = new Camera($obj);
-                  $obj['stream_url'] = $this->getCameraStreamUrl($tempCamera);
+                  $slug = 'cam_' . (Camera::count() + 1);
+                  $obj['slug'] = $slug;
                   $obj['createdby_id'] = $user->id;
                   $saved_obj = $this->model_camera->create($obj);
+                  $this->regenerateMediatmxConfig($saved_obj);
 
                   $time = now()->format('h:i A');
                   $message = "$time • {$user->name} create new camera {$saved_obj->id} - {$saved_obj->name} in the Admin Panel.";
@@ -108,17 +114,107 @@ class CameraService
             return $saved_obj;
       }
 
+
+      protected function regenerateMediatmxConfig($camera)
+      {
+            $configPath = storage_path('app/mediamtx.yml');
+
+            // Check if the file exists
+            if (File::exists($configPath)) {
+                  // Read the file contents
+                  $configData = File::get($configPath);
+
+                  // Check if the camera already exists in the file
+                  $cameraSlugPattern = "/^\s*{$camera->slug}:\s*$/m";  // Regex to check for the camera slug
+
+                  if (preg_match($cameraSlugPattern, $configData)) {
+                        // Camera exists, so update the existing camera's stream_url
+                        $configData = preg_replace(
+                              "/(\s*{$camera->slug}:\s*[\s\S]*?source:)(.*?)(\n)/",
+                              "$1 {$camera->stream_url} $3",
+                              $configData
+                        );
+                  } else {
+                        // Camera doesn't exist, so append a new camera entry
+                        $configData .= "  {$camera->slug}:\n";
+                        $configData .= "    source: {$camera->stream_url}\n";
+                  }
+            } else {
+                  // If the file doesn't exist, create the initial structure with the new camera
+                  $configData = "paths:\n";
+                  $configData .= "  {$camera->slug}:\n";
+                  $configData .= "    source: {$camera->stream_url}\n";
+            }
+
+            // Write the updated config data back to the file
+            File::put($configPath, $configData);
+
+            // Optionally, restart MediaMTX service if required
+            $this->restartMediaMTX();
+      }
+
+      // Optional method to restart MediaMTX service
+      protected function restartMediaMTX()
+      {
+            // Execute a command to restart MediaMTX service if applicable
+            exec('sudo systemctl restart mediamtx');
+      }
+
       public function getById($id)
       {
-            return $this->model_camera->getModel()::findOrFail($id);
+            return $this->model_camera->getModel()::with('recordings')->findOrFail($id);
+      }
+
+      //Camera Recording
+      public function cameraRecording($camera_id, $duration = 60)
+      {
+            $camera = $this->model_camera->getModel()::find($camera_id);
+            $startTime = now();
+            $fileName = "camera_{$camera->id}_" . $startTime->format('Ymd_His') . ".mp4";
+            $outputPath = public_path("recordings/{$fileName}");
+            $duration = $duration ?? 60; // seconds
+            $endTime = $startTime->copy()->addSeconds($duration);
+
+            // Ensure directory exists
+            if (!file_exists(public_path('recordings'))) {
+                  mkdir(public_path('recordings'), 0775, true);
+            }
+            $process = new Process([
+                  'ffmpeg',
+                  '-i',
+                  $camera->stream_url,
+                  '-t',
+                  $duration,
+                  '-c',
+                  'copy',
+                  $outputPath
+            ]);
+
+            $process->run(); // Waits until FFmpeg finishes
+
+            if (!$process->isSuccessful()) {
+                  return $process->getErrorOutput();
+            } else {
+
+                  // Save to DB only if file was created successfully
+                  $camera_recording = $this->model_camera_recording->getModel()::create([
+                        'camera_id' => $camera->id,
+                        'file_path' => "recordings/{$fileName}",
+                        'start_time' => $startTime,
+                        'end_time' => $endTime,
+                        'recording_type' => 'manual',
+                  ]);
+
+                  return $camera_recording;
+            }
       }
 
       // my cameras
       public function myCameras()
       {
             return $this->model_camera->getModel()::where('is_active', 1)
-            ->select('id', 'name', 'latitude as lat', 'longitude as lng')
-            ->where('createdby_id',Auth()->user()->id)
+                  ->select('id', 'name', 'latitude as lat', 'longitude as lng')
+                  ->where('createdby_id', Auth()->user()->id)
                   ->get();
       }
 

@@ -128,6 +128,12 @@
                                                             <input type="text" class="form-control" id="password" name="password" value="{{isset($camera)?$camera->password:old('password')}}" placeholder="Enter password..">
                                                       </div>
                                                 </div>
+                                                <div class="col-md-12">
+                                                      <div class="form-group">
+                                                            <label class="col-form-label" for="stream_url">RTSPs Address</label>
+                                                            <input type="text" class="form-control" id="stream_url" name="stream_url" value="{{isset($camera)?$camera->stream_url:old('stream_url')}}" placeholder="Enter address..">
+                                                      </div>
+                                                </div>
                                           </div>
                                     </div>
                                     <div class="card-footer">
@@ -149,4 +155,67 @@
 <!--**********************************
             Content body end
         ***********************************-->
+@endsection
+@section('js')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const fields = ['protocol', 'ip_address', 'port', 'username', 'password'];
+    fields.forEach(id => {
+        document.getElementById(id).addEventListener('input', generateStreamUrl);
+    });
+
+    function generateStreamUrl() {
+        const protocol = document.getElementById('protocol').value.toLowerCase();
+        const ip = document.getElementById('ip_address').value.trim();
+        const port = document.getElementById('port').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        let url = '';
+
+        if (!protocol || !ip) {
+            document.getElementById('stream_url').value = '';
+            return;
+        }
+
+        switch (protocol) {
+            case 'rtsp':
+                url = 'rtsp://';
+                if (username && password) {
+                    url += `${username}:${password}@`;
+                }
+                url += ip;
+                if (port) {
+                    url += `:${port}`;
+                }
+                url += '/stream';
+                break;
+
+            case 'rtmp':
+                url = 'rtmp://';
+                url += ip;
+                if (port) {
+                    url += `:${port}`;
+                }
+                url += '/live/stream';
+                break;
+
+            case 'p2p':
+                url = 'p2p://';
+                if (username) {
+                    url += username + '@';
+                }
+                url += ip;
+                // P2P often doesn't follow a standard URL format
+                break;
+
+            default:
+                url = '';
+        }
+
+        document.getElementById('stream_url').value = url;
+    }
+});
+</script>
+
 @endsection

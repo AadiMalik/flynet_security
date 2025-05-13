@@ -13,6 +13,7 @@ class Camera extends Model
 
     protected $fillable = [
         'id',
+        'slug',
         'name',
         'ip_address',
         'protocol',
@@ -57,5 +58,10 @@ class Camera extends Model
     public function groups()
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    public function recordings()
+    {
+        return $this->hasMany(CameraRecording::class);
     }
 }

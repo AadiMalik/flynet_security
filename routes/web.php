@@ -14,6 +14,7 @@ use App\Http\Controllers\PatrolController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,8 +103,10 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [CameraController::class, 'store']);
             Route::get('edit/{id}', [CameraController::class, 'edit']);
             Route::get('view/{id}', [CameraController::class, 'view']);
-            Route::get('destroy/{id}', [CameraController::class,'destroy']);
+            Route::get('destroy/{id}', [CameraController::class, 'destroy']);
             Route::get('status/{id}', [CameraController::class, 'status']);
+            Route::get('recording/{id}', [CameraController::class, 'recording'])->name('camera.recording');
+            Route::get('download-recording/{id}', [CameraController::class, 'downloadRecording'])->name('camera.downloadRecording');
       });
 
       // Alarms
@@ -114,7 +117,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [AlarmController::class, 'store']);
             Route::get('edit/{id}', [AlarmController::class, 'edit']);
             Route::get('view/{id}', [AlarmController::class, 'view']);
-            Route::get('destroy/{id}', [AlarmController::class,'destroy']);
+            Route::get('destroy/{id}', [AlarmController::class, 'destroy']);
             Route::get('status/{id}', [AlarmController::class, 'status']);
       });
 
@@ -126,7 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [MosaicController::class, 'store']);
             Route::get('edit/{id}', [MosaicController::class, 'edit']);
             Route::get('view/{id}', [MosaicController::class, 'view']);
-            Route::get('destroy/{id}', [MosaicController::class,'destroy']);
+            Route::get('destroy/{id}', [MosaicController::class, 'destroy']);
             Route::get('status/{id}', [MosaicController::class, 'status']);
       });
 
@@ -138,7 +141,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [PatrolController::class, 'store']);
             Route::get('edit/{id}', [PatrolController::class, 'edit']);
             Route::get('view/{id}', [PatrolController::class, 'view']);
-            Route::get('destroy/{id}', [PatrolController::class,'destroy']);
+            Route::get('destroy/{id}', [PatrolController::class, 'destroy']);
             Route::get('status/{id}', [PatrolController::class, 'status']);
       });
 
@@ -150,7 +153,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('store', [GroupController::class, 'store']);
             Route::get('edit/{id}', [GroupController::class, 'edit']);
             Route::get('view/{id}', [GroupController::class, 'view']);
-            Route::get('destroy/{id}', [GroupController::class,'destroy']);
+            Route::get('destroy/{id}', [GroupController::class, 'destroy']);
             Route::get('status/{id}', [GroupController::class, 'status']);
       });
 
@@ -164,7 +167,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('create', [CustomerController::class, 'create']);
             Route::post('store', [CustomerController::class, 'store']);
             Route::get('edit/{id}', [CustomerController::class, 'edit']);
-            Route::get('destroy/{id}', [CustomerController::class,'destroy']);
+            Route::get('destroy/{id}', [CustomerController::class, 'destroy']);
       });
 
       // My cameras
@@ -178,12 +181,7 @@ Route::group(['middleware' => ['auth']], function () {
       // My patrols
       Route::get('my-patrols', [MyPatrolController::class, 'index'])->name('my-patrols.index');
       Route::get('my-patrols/view/{id}', [MyPatrolController::class, 'view'])->name('my-patrols.view');
-      
+
       // My alarms
       Route::get('my-alarms', [MyAlarmController::class, 'index'])->name('my-alarms.index');
-
-
-
-
-
 });

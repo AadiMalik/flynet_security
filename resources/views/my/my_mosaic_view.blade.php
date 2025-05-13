@@ -42,17 +42,19 @@
                                           @foreach($mosaic->cameras as $item)
                                           <div class="col-md-6">
                                                 @if($item->protocol === 'RTSP')
-                                                <video style="width: 100%; height: 400px;" controls autoplay>
-                                                      <source src="{{ $item->stream_url }}" type="video/mp4">
-                                                      Your browser does not support the video tag.
-                                                </video>
+                                                <iframe
+                                                      src="http://localhost:8889/webrtc/play/{{$item->slug}}"
+                                                      style="width: 100%; height: 400px; border: none;"
+                                                      allow="camera; microphone; fullscreen"
+                                                      allowfullscreen></iframe>
                                                 @elseif($item->protocol === 'P2P')
                                                 <img src="{{ $item->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
                                                 @elseif($item->protocol === 'RTMP')
-                                                <video style="width: 100%; height: 400px;" controls autoplay>
-                                                      <source src="{{ $item->stream_url }}" type="application/x-mpegURL">
-                                                      Your browser does not support the video tag.
-                                                </video>
+                                                <iframe
+                                                      src="http://localhost:8889/webrtc/play/{{$item->slug}}"
+                                                      style="width: 100%; height: 400px; border: none;"
+                                                      allow="camera; microphone; fullscreen"
+                                                      allowfullscreen></iframe>
                                                 @endif
                                           </div>
                                           @endforeach

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CameraRecording;
 use App\Services\Concrete\CameraService;
 use App\Traits\JsonResponse;
 use Exception;
@@ -87,6 +88,7 @@ class CameraController extends Controller
                 "ip_address"    => $request->ip_address,
                 "protocol"      => $request->protocol,
                 "manufacturer"  => $request->manufacturer,
+                "stream_url"    => $request->stream_url,
                 "location"      => $request->location,
                 "longitude"     => $request->longitude,
                 "latitude"      => $request->latitude,
@@ -120,7 +122,42 @@ class CameraController extends Controller
         $camera = $this->camera_service->getById($id);
         return view('cameras.view', compact('camera'));
     }
+    public function recording($id)
+    {
+        try {
+            // abort_if(Gate::denies('cameras_recording'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            $camera = $this->camera_service->cameraRecording($id, 60);
+            if ($camera)
+                return  $this->success(
+                    config("enum.success"),
+                    $camera,
+                    false
+                );
 
+            return  $this->error(
+                config("enum.error")
+            );
+        } catch (Exception $e) {
+            return  $this->error(
+                $e->getMessage()
+            );
+        }
+    }
+    public function downloadRecording($id)
+    {
+        $recording = CameraRecording::findOrFail($id);
+        $filePath = public_path($recording->file_path);
+
+        if (!file_exists($filePath)) {
+            dd([
+                'path_attempted' => $filePath,
+                'file_path_from_db' => $recording->file_path
+            ]);
+            abort(404, 'Recording not found.');
+        }
+
+        return response()->download($filePath);
+    }
     // status update
     public function status($id)
     {
