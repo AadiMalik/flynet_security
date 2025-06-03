@@ -33,26 +33,25 @@
       <div class="container-fluid">
             <div class="row">
                   <div class="col-12">
+                        @if(session('success'))
+                        <script>
+                              toastr.success('{{ session('
+                                    success ') }}');
+                        </script>
+                        @endif
+
+                        @if(session('error'))
+                        <script>
+                              toastr.error('{{ session('
+                                    error ') }}');
+                        </script>
+                        @endif
                         <div class="card">
                               <div class="card-header d-flex justify-content-between align-items-center">
                                     <h4 class="card-title mb-0">View Camera</h4>
                               </div>
                               <div class="card-body">
-                                    @if($camera->protocol === 'RTSP')
-                                    <iframe
-                                          src="http://localhost:8889/webrtc/play/{{$camera->slug}}"
-                                          style="width: 100%; height: 400px; border: none;"
-                                          allow="camera; microphone; fullscreen"
-                                          allowfullscreen></iframe>
-                                    @elseif($camera->protocol === 'P2P')
-                                    <img src="{{ $camera->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
-                                    @elseif($camera->protocol === 'RTMP')
-                                    <iframe
-                                          src="http://localhost:8889/webrtc/play/{{$camera->slug}}"
-                                          style="width: 100%; height: 400px; border: none;"
-                                          allow="camera; microphone; fullscreen"
-                                          allowfullscreen></iframe>
-                                    @endif
+                                    <video id="video" width="100%" controls autoplay muted></video>
                                     <div class="caption">
                                           🔴 {{ $camera->name ?? '' }}
 
@@ -68,10 +67,10 @@
                                           @endif
 
                                           {{-- Trigger new recording --}}
-                                          <a class="btn btn-primary btn-md m-1"
-                                                href="{{ url('cameras/recording/'. $camera->id) }}">
+                                          <button id="recordBtn" class="btn btn-primary btn-md m-1" data-id="{{ $camera->id }}">
                                                 <i class="fa fa-video"></i> Record New Video
-                                          </a>
+                                          </button>
+                                          <span id="recordTimer" class="ml-2 text-danger font-weight-bold"></span>
                                     </div>
 
 
@@ -90,24 +89,20 @@
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-      // document.addEventListener('DOMContentLoaded', function() {
-      //       var video = document.getElementById('video');
-      //       var streamUrl = "{{ $camera->stream_url }}"; // Should be .m3u8 URL
+      const video = document.getElementById('video');
+      const videoSrc = 'http://127.0.0.1:8888/{{ $camera->slug }}/index.m3u8';
 
-      //       if (Hls.isSupported()) {
-      //             var hls = new Hls();
-      //             hls.loadSource(streamUrl);
-      //             hls.attachMedia(video);
-      //             hls.on(Hls.Events.MANIFEST_PARSED, function() {
-      //                   video.play();
-      //             });
-      //       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      //             video.src = streamUrl;
-      //             video.addEventListener('loadedmetadata', function() {
-      //                   video.play();
-      //             });
-      //       }
-      // });
+      if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', () => video.play());
+      } else {
+            alert("HLS not supported in this browser.");
+      }
       $(document).on('click', '.delete-camera', function() {
             let id = $(this).data('id');
             if (!confirm('Are you sure to delete this camera?')) return;
@@ -132,4 +127,51 @@
             });
       });
 </script>
+<script>
+      $(document).ready(function() {
+            $('#recordBtn').on('click', function() {
+                  const $btn = $(this);
+                  const cameraId = $btn.data('id');
+                  const $timer = $('#recordTimer');
+
+                  $btn.prop('disabled', true).text('Recording...');
+                  $timer.text('⏳ 5:00');
+
+                  let secondsLeft = 300;
+                  const interval = setInterval(() => {
+                        secondsLeft--;
+                        const min = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
+                        const sec = String(secondsLeft % 60).padStart(2, '0');
+                        $timer.text(`⏳ ${min}:${sec}`);
+
+                        if (secondsLeft <= 0) {
+                              clearInterval(interval);
+                              $btn.prop('disabled', false).html('<i class="fa fa-video"></i> Record New Video');
+                              $timer.text('');
+                        }
+                  }, 1000);
+
+                  $.ajax({
+                        url: "{{ url('cameras/recording/') }}/" + cameraId,
+                        type: 'GET',
+                        success: function(res) {
+                              toastr.success(res.message || 'Recording started successfully. File will be available after 5 minutes.');
+                        },
+                        error: function(xhr) {
+                              clearInterval(interval);
+                              $btn.prop('disabled', false).html('<i class="fa fa-video"></i> Record New Video');
+                              $timer.text('');
+
+                              let message = 'Recording failed.';
+                              if (xhr.responseJSON && xhr.responseJSON.message) {
+                                    message = xhr.responseJSON.message;
+                              }
+
+                              toastr.error(message);
+                        }
+                  });
+            });
+      });
+</script>
+
 @endsection

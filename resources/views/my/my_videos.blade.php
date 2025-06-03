@@ -27,64 +27,47 @@
                               <div class="card-body">
                                     <div class="row">
                                           <div class="col-md-8">
-                                                <iframe style="width: 100%; height: 400px;"
-                                                      src="https://www.youtube.com/embed/3LXQWU67Ufk?si=4F_8xMZyOyC-5wjE&autoplay=1&mute=1"
-                                                      title="YouTube video player"
-                                                      frameborder="0"
-                                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                      referrerpolicy="strict-origin-when-cross-origin"
-                                                      allowfullscreen>
-                                                </iframe>
+                                                @php
+                                                $latestRecording = $camera_recordings->first();
+                                                @endphp
+                                                <video width="100%" height="auto" controls>
+                                                      <source src="{{ asset('storage/recordings/' . basename($latestRecording->file_path??'')) }}" type="video/mp4">
+                                                      Your browser does not support the video tag.
+                                                </video>
                                           </div>
                                           <div class="col-md-4">
-                                                <h5>4 Videos</h5>
+                                                <h5>{{$camera_recordings->count()}} Videos</h5>
                                                 <div class="row">
                                                       <div class="col-md-12">
                                                             <div class="form-group mb-0">
-                                                                  <div class="input-group">
-                                                                        <input type="search" style=" border-radius: 10px;" class="form-control rounded-start" placeholder="Search" aria-label="Search">
-                                                                        <button class="input-group-text bg-white text-primary rounded-end" style=" border-radius: 10px;">
-                                                                              <i class="fa fa-search"></i>
-                                                                        </button>
-                                                                  </div>
+                                                                  <form method="GET" action="{{ route('my-videos.index') }}" class="mb-3">
+                                                                        <div class="input-group">
+                                                                              <input type="search" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search recording..." style="border-radius: 10px;">
+                                                                              <button type="submit" class="input-group-text bg-white text-primary" style="border-radius: 10px;">
+                                                                                    <i class="fa fa-search"></i>
+                                                                              </button>
+                                                                        </div>
+                                                                  </form>
                                                             </div>
                                                       </div>
+                                                      @foreach($camera_recordings as $item)
                                                       <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-video-view')}}">
+                                                            <a href="{{ route('my-videos.view', ['id' => $item->id]) }}">
                                                                   <div class="row">
                                                                         <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
+                                                                              <video width="100%" height="auto">
+                                                                                    <source src="{{ asset('app/storage/recordings/' . basename($item->file_path)) }}" type="video/mp4">
+                                                                                    Your browser does not support the video tag.
+                                                                              </video>
+                                                                              <!-- <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg"> -->
                                                                         </div>
                                                                         <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Video</b>
+                                                                              <b class="text-black">{{$item->file_name??''}}</b>
                                                                         </div>
                                                                   </div>
                                                             </a>
                                                       </div>
-                                                      <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-video-view')}}">
-                                                                  <div class="row">
-                                                                        <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
-                                                                        </div>
-                                                                        <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Video</b>
-                                                                        </div>
-                                                                  </div>
-                                                            </a>
-                                                      </div>
-                                                      <div class="col-md-12 mt-2">
-                                                            <a href="{{url('my-video-view')}}">
-                                                                  <div class="row">
-                                                                        <div class="col-md-5 mb-4 mb-md-0">
-                                                                              <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="https://1180.servicestream.io:8060/61f7b0d9ae7a/last.jpg">
-                                                                        </div>
-                                                                        <div class="col-md-7">
-                                                                              <b class="text-black">Flynet CAM1.02 Porton Video</b>
-                                                                        </div>
-                                                                  </div>
-                                                            </a>
-                                                      </div>
+                                                      @endforeach
                                                 </div>
                                           </div>
                                     </div>

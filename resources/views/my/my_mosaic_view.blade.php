@@ -39,23 +39,9 @@
                               </div>
                               <div class="card-body">
                                     <div class="row">
-                                          @foreach($mosaic->cameras as $item)
+                                          @foreach($mosaic->cameras as $index=>$item)
                                           <div class="col-md-6">
-                                                @if($item->protocol === 'RTSP')
-                                                <iframe
-                                                      src="http://localhost:8889/webrtc/play/{{$item->slug}}"
-                                                      style="width: 100%; height: 400px; border: none;"
-                                                      allow="camera; microphone; fullscreen"
-                                                      allowfullscreen></iframe>
-                                                @elseif($item->protocol === 'P2P')
-                                                <img src="{{ $item->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
-                                                @elseif($item->protocol === 'RTMP')
-                                                <iframe
-                                                      src="http://localhost:8889/webrtc/play/{{$item->slug}}"
-                                                      style="width: 100%; height: 400px; border: none;"
-                                                      allow="camera; microphone; fullscreen"
-                                                      allowfullscreen></iframe>
-                                                @endif
+                                                <video id="video-{{ $index }}" width="100%" controls autoplay muted></video>
                                           </div>
                                           @endforeach
                                     </div>
@@ -70,4 +56,23 @@
 <!--**********************************
             Content body end
         ***********************************-->
+@endsection
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+    @foreach($mosaic->cameras as $index => $item)
+        const video{{ $index }} = document.getElementById('video-{{ $index }}');
+        const videoSrc{{ $index }} = 'http://127.0.0.1:8888/{{ $item->slug }}/index.m3u8';
+
+        if (Hls.isSupported()) {
+            const hls{{ $index }} = new Hls();
+            hls{{ $index }}.loadSource(videoSrc{{ $index }});
+            hls{{ $index }}.attachMedia(video{{ $index }});
+            hls{{ $index }}.on(Hls.Events.MANIFEST_PARSED, () => video{{ $index }}.play());
+        } else if (video{{ $index }}.canPlayType('application/vnd.apple.mpegurl')) {
+            video{{ $index }}.src = videoSrc{{ $index }};
+            video{{ $index }}.addEventListener('loadedmetadata', () => video{{ $index }}.play());
+        }
+    @endforeach
+</script>
 @endsection

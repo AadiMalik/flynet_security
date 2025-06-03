@@ -3,11 +3,12 @@
 namespace App\Services\Concrete;
 
 use App\Repository\Repository;
-use App\Models\{Camera, cameraRecording};
+use App\Models\{Camera, CameraRecording};
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
-use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class CameraService
 {
@@ -19,7 +20,7 @@ class CameraService
       {
             // set the model
             $this->model_camera = new Repository(new Camera);
-            $this->model_camera_recording = new Repository(new cameraRecording);
+            $this->model_camera_recording = new Repository(new CameraRecording);
       }
 
       public function getCameraSource($data)
@@ -168,52 +169,101 @@ class CameraService
       //Camera Recording
       public function cameraRecording($camera_id, $duration = 60)
       {
-            $camera = $this->model_camera->getModel()::find($camera_id);
+            // $camera = $this->model_camera->getModel()::findOrFail($camera_id);
+            // $slug = $camera->slug;
+            // $streamUrl = "http://127.0.0.1:8888/{$slug}/index.m3u8";
+            // $filename = $slug . '_' . now()->format('Ymd_His') . '.mp4';
+            // $outputPath = storage_path("app/public/recordings/{$filename}");
+
+            // $command = [
+            //       "C:\\ffmpeg\\bin\\ffmpeg.exe",
+            //       "-y",
+            //       "-rw_timeout",
+            //       "15000000",
+            //       "-i",
+            //       $streamUrl,
+            //       "-t",
+            //       (string)$duration,
+            //       "-c",
+            //       "copy",
+            //       $outputPath
+            // ];
+
+            // exec(implode(" ", $command), $output, $return);
+
+            // sleep(2); // Let filesystem flush
+            // clearstatcache();
+
+
+            // if (file_exists($outputPath)) {
+            //       $startTime = now();
+            //       $endTime = $startTime->copy()->addSeconds($duration);
+            //       $obj = [
+            //             'camera_id' => $camera->id,
+            //             'file_name' => $filename,
+            //             'file_path' => "public/recordings/{$filename}",
+            //             'start_time' => $startTime,
+            //             'end_time' => $endTime,
+            //             'recording_type' => 'manual',
+            //       ];
+            //       $recording = $this->model_camera_recording->getModel()::create($obj);
+            //       return $outputPath;
+            // } else {
+            //       return false;
+            // }
+
+            $camera = $this->model_camera->getModel()::findOrFail($camera_id);
+            $slug = $camera->slug;
+            $streamUrl = "http://127.0.0.1:8888/{$slug}/index.m3u8";
+            $filename = $slug . '_' . now()->format('Ymd_His') . '.mp4';
+            $outputPath = storage_path("app/public/recordings/{$filename}");
+
+            // Check if the stream is live
+            $headers = @get_headers($streamUrl);
+            if (!$headers || strpos($headers[0], '200') === false) {
+                  return false;
+            }
+
+            // FFmpeg command to run in background
+            $command = implode(" ", [
+                  "start /B",
+                  "C:\\ffmpeg\\bin\\ffmpeg.exe",
+                  "-y",
+                  "-rw_timeout",
+                  "15000000",
+                  "-i",
+                  $streamUrl,
+                  "-t",
+                  (string)$duration,
+                  "-c",
+                  "copy",
+                  "\"{$outputPath}\""
+            ]) . " > NUL 2>&1";
+
+            // Run in background on Windows
+            pclose(popen("cmd /C " . $command, "r"));
+
+            // Save the recording record
             $startTime = now();
-            $fileName = "camera_{$camera->id}_" . $startTime->format('Ymd_His') . ".mp4";
-            $outputPath = public_path("recordings/{$fileName}");
-            $duration = $duration ?? 60; // seconds
             $endTime = $startTime->copy()->addSeconds($duration);
 
-            // Ensure directory exists
-            if (!file_exists(public_path('recordings'))) {
-                  mkdir(public_path('recordings'), 0775, true);
-            }
-            $process = new Process([
-                  'ffmpeg',
-                  '-i',
-                  $camera->stream_url,
-                  '-t',
-                  $duration,
-                  '-c',
-                  'copy',
-                  $outputPath
+            $this->model_camera_recording->getModel()::create([
+                  'camera_id' => $camera->id,
+                  'file_name' => $filename,
+                  'file_path' => "public/recordings/{$filename}",
+                  'start_time' => $startTime,
+                  'end_time' => $endTime,
+                  'recording_type' => 'manual',
             ]);
 
-            $process->run(); // Waits until FFmpeg finishes
-
-            if (!$process->isSuccessful()) {
-                  return $process->getErrorOutput();
-            } else {
-
-                  // Save to DB only if file was created successfully
-                  $camera_recording = $this->model_camera_recording->getModel()::create([
-                        'camera_id' => $camera->id,
-                        'file_path' => "recordings/{$fileName}",
-                        'start_time' => $startTime,
-                        'end_time' => $endTime,
-                        'recording_type' => 'manual',
-                  ]);
-
-                  return $camera_recording;
-            }
+            return true;
       }
 
       // my cameras
       public function myCameras()
       {
             return $this->model_camera->getModel()::where('is_active', 1)
-                  ->select('id', 'name', 'latitude as lat', 'longitude as lng')
+                  ->select('id', 'name', 'slug', 'latitude as lat', 'longitude as lng')
                   ->where('createdby_id', Auth()->user()->id)
                   ->get();
       }
@@ -242,6 +292,22 @@ class CameraService
             $camera->update();
 
             return true;
+      }
+
+      // my camera recording
+      public function myCameraRecording()
+      {
+            return $this->model_camera_recording->getModel()::with(['camera'])
+                  ->whereHas('camera', function ($query) {
+                        $query->where('createdby_id', auth()->id());
+                  })
+                  ->get();
+      }
+
+      // my camera recording by id
+      public function getCameraRecordingById($id)
+      {
+            return $this->model_camera_recording->getModel()::with('camera')->findOrFail($id);
       }
 
       //help

@@ -11,6 +11,7 @@ class CameraRecording extends Model
     use HasFactory;
     protected $fillable = [
         'camera_id',
+        'file_name',
         'file_path',
         'start_time',
         'end_time',
@@ -20,5 +21,9 @@ class CameraRecording extends Model
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y H:i:s');
+    }
+
+    public function camera(){
+        return $this->belongsTo(Camera::class);
     }
 }

@@ -48,26 +48,12 @@
                                           </div>
 
                                           <div id="mosaic-container">
-                                                @foreach($patrol->mosaics as $index => $mosaic)
-                                                <div class="mosaic-group" style="{{ $index !== 0 ? 'display: none;' : '' }}">
+                                                @foreach($patrol->mosaics as $mosaicIndex => $mosaic)
+                                                <div class="mosaic-group" style="{{ $mosaicIndex !== 0 ? 'display: none;' : '' }}">
                                                       <div class="row">
-                                                            @foreach($mosaic->cameras as $camera)
+                                                            @foreach($mosaic->cameras as $cameraIndex => $camera)
                                                             <div class="col-md-6">
-                                                                  @if($camera->protocol === 'RTSP')
-                                                                  <iframe
-                                                                        src="http://localhost:8889/webrtc/play/{{$camera->slug}}"
-                                                                        style="width: 100%; height: 400px; border: none;"
-                                                                        allow="camera; microphone; fullscreen"
-                                                                        allowfullscreen></iframe>
-                                                                  @elseif($camera->protocol === 'P2P')
-                                                                  <img src="{{ $camera->stream_url }}" alt="Camera Feed" style="width: 100%; height: 400px;" class="img-fluid">
-                                                                  @elseif($camera->protocol === 'RTMP')
-                                                                  <iframe
-                                                                        src="http://localhost:8889/webrtc/play/{{$camera->slug}}"
-                                                                        style="width: 100%; height: 400px; border: none;"
-                                                                        allow="camera; microphone; fullscreen"
-                                                                        allowfullscreen></iframe>
-                                                                  @endif
+                                                                  <video id="video-{{ $mosaicIndex }}-{{ $cameraIndex }}" width="100%" controls autoplay muted></video>
                                                             </div>
                                                             @endforeach
                                                       </div>
@@ -89,47 +75,57 @@
         ***********************************-->
 @endsection
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-      // Collect mosaic groups and names
-      const mosaicGroups = document.querySelectorAll('.mosaic-group');
-      const mosaicNames = JSON.parse($("#mosaic-data").val());
-      console.log(mosaicNames);
-      const patrolTimeSeconds = Number("{{ $patrol->patrol_time }}");
+    const mosaicGroups = document.querySelectorAll('.mosaic-group');
+    const mosaicNames = JSON.parse($("#mosaic-data").val());
+    const patrolTimeSeconds = Number("{{ $patrol->patrol_time }}");
+    const mosaicNameEl = document.getElementById('mosaic-name');
+    const timerDisplay = document.getElementById('patrol-timer');
 
-      const mosaicNameEl = document.getElementById('mosaic-name');
-      const timerDisplay = document.getElementById('patrol-timer');
+    let currentIndex = 0;
+    let timeLeft = patrolTimeSeconds;
 
-      let currentIndex = 0;
-      let timeLeft = patrolTimeSeconds;
+    function showMosaic(index) {
+        mosaicGroups.forEach(group => group.style.display = 'none');
+        mosaicGroups[index].style.display = 'block';
+        mosaicNameEl.textContent = mosaicNames[index];
+    }
 
-      function showMosaic(index) {
-            // Hide all mosaics
-            mosaicGroups.forEach(group => group.style.display = 'none');
+    function switchMosaic() {
+        currentIndex = (currentIndex + 1) % mosaicGroups.length;
+        showMosaic(currentIndex);
+        timeLeft = patrolTimeSeconds;
+    }
 
-            // Show the selected one
-            mosaicGroups[index].style.display = 'block';
+    showMosaic(currentIndex);
 
-            // Update mosaic name
-            mosaicNameEl.textContent = mosaicNames[index];
-      }
+    setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+            switchMosaic();
+        }
+        timerDisplay.textContent = timeLeft;
+    }, 1000);
 
-      function switchMosaic() {
-            currentIndex = (currentIndex + 1) % mosaicGroups.length;
-            showMosaic(currentIndex);
-            timeLeft = patrolTimeSeconds;
-      }
+    // Load HLS for all cameras in all mosaics
+    @foreach($patrol->mosaics as $mosaicIndex => $mosaic)
+        @foreach($mosaic->cameras as $cameraIndex => $camera)
+            const videoEl_{{ $mosaicIndex }}_{{ $cameraIndex }} = document.getElementById('video-{{ $mosaicIndex }}-{{ $cameraIndex }}');
+            const streamSrc_{{ $mosaicIndex }}_{{ $cameraIndex }} = 'http://127.0.0.1:8888/{{ $camera->slug }}/index.m3u8';
 
-      // Initial display
-      showMosaic(currentIndex);
-
-      // Countdown and switch logic
-      setInterval(() => {
-            timeLeft--;
-            if (timeLeft <= 0) {
-                  switchMosaic();
+            if (Hls.isSupported()) {
+                const hls_{{ $mosaicIndex }}_{{ $cameraIndex }} = new Hls();
+                hls_{{ $mosaicIndex }}_{{ $cameraIndex }}.loadSource(streamSrc_{{ $mosaicIndex }}_{{ $cameraIndex }});
+                hls_{{ $mosaicIndex }}_{{ $cameraIndex }}.attachMedia(videoEl_{{ $mosaicIndex }}_{{ $cameraIndex }});
+                hls_{{ $mosaicIndex }}_{{ $cameraIndex }}.on(Hls.Events.MANIFEST_PARSED, () => videoEl_{{ $mosaicIndex }}_{{ $cameraIndex }}.play());
+            } else if (videoEl_{{ $mosaicIndex }}_{{ $cameraIndex }}.canPlayType('application/vnd.apple.mpegurl')) {
+                videoEl_{{ $mosaicIndex }}_{{ $cameraIndex }}.src = streamSrc_{{ $mosaicIndex }}_{{ $cameraIndex }};
+                videoEl_{{ $mosaicIndex }}_{{ $cameraIndex }}.addEventListener('loadedmetadata', () => videoEl_{{ $mosaicIndex }}_{{ $cameraIndex }}.play());
             }
-            timerDisplay.textContent = timeLeft;
-      }, 1000);
+        @endforeach
+    @endforeach
 </script>
+
 
 @endsection

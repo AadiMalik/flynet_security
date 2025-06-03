@@ -40,7 +40,7 @@
                               <div class="card-body">
                                     <div class="row">
                                           <div class="col-md-8">
-                                                @if($camera->protocol === 'RTSP')
+                                                <!-- @if($camera->protocol === 'RTSP')
                                                 <iframe
                                                       src="http://localhost:8889/webrtc/play/{{$camera->slug}}"
                                                       style="width: 100%; height: 400px; border: none;"
@@ -54,11 +54,19 @@
                                                       style="width: 100%; height: 400px; border: none;"
                                                       allow="camera; microphone; fullscreen"
                                                       allowfullscreen></iframe>
-                                                @endif
+                                                @endif -->
+                                                <video id="video" width="100%" controls autoplay muted></video>
                                                 <div class="caption">
-                                                      🔴 {{$camera->name??''}} <a class="btn btn-primary btn-md m-1" href="javascript:void(0)">
+                                                      🔴 {{$camera->name??''}}
+                                                      @php
+                                                      $latestRecording = $camera->recordings()->latest()->first();
+                                                      @endphp
+
+                                                      @if ($latestRecording)
+                                                      <a class="btn btn-primary btn-md m-1" href="{{ url('cameras/download-recording/'. $latestRecording->id) }}">
                                                             <i class="fa fa-download"></i> Save Video
                                                       </a>
+                                                      @endif
                                                 </div>
 
                                           </div>
@@ -77,15 +85,15 @@
                                                                   </form>
                                                             </div>
                                                       </div>
-                                                      @foreach($cameras as $camera)
+                                                      @foreach($cameras as $item)
                                                       <div class="col-md-12 mt-2">
-                                                            <a href="{{ route('my-cameras.view', ['id' => $camera->id]) }}">
+                                                            <a href="{{ route('my-cameras.view', ['id' => $item->id]) }}">
                                                                   <div class="row">
                                                                         <div class="col-md-5 mb-4 mb-md-0">
                                                                               <img alt="Thumbnail" style="width:120px; height: 80px; border-radius: 10px;" src="{{asset('uploads/cameras/1.jpg')}}">
                                                                         </div>
                                                                         <div class="col-md-7">
-                                                                              <b class="text-black">{{ $camera->name }}</b>
+                                                                              <b class="text-black">{{ $item->name }}</b>
                                                                         </div>
                                                                   </div>
                                                             </a>
@@ -105,4 +113,23 @@
 <!--**********************************
             Content body end
         ***********************************-->
+@endsection
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+      const video = document.getElementById('video');
+      const videoSrc = 'http://127.0.0.1:8888/{{$camera->slug}}/index.m3u8';
+
+      if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', () => video.play());
+      } else {
+            alert("HLS not supported in this browser.");
+      }
+</script>
 @endsection

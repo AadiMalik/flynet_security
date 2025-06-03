@@ -125,28 +125,28 @@ class CameraController extends Controller
     public function recording($id)
     {
         try {
-            // abort_if(Gate::denies('cameras_recording'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-            $camera = $this->camera_service->cameraRecording($id, 60);
-            if ($camera)
-                return  $this->success(
-                    config("enum.success"),
-                    $camera,
-                    false
-                );
+            $recorded = $this->camera_service->cameraRecording($id, 300); // 5 minutes = 300 seconds
 
-            return  $this->error(
-                config("enum.error")
-            );
+            if ($recorded) {
+                return response()->json(['success' => true, 'message' => 'Recording started successfully.']);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Stream unavailable or failed to start recording.'
+            ], 500);
         } catch (Exception $e) {
-            return  $this->error(
-                $e->getMessage()
-            );
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
+
     public function downloadRecording($id)
     {
         $recording = CameraRecording::findOrFail($id);
-        $filePath = public_path($recording->file_path);
+        $filePath = storage_path('app/'.$recording->file_path);
 
         if (!file_exists($filePath)) {
             dd([
