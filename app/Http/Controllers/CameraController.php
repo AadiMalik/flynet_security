@@ -112,6 +112,7 @@ class CameraController extends Controller
     public function edit($id)
     {
         // abort_if(Gate::denies('cameras_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $camera = $this->camera_service->getById($id);
         return view('cameras.create', compact('camera'));
     }
@@ -119,6 +120,10 @@ class CameraController extends Controller
     public function view($id)
     {
         // abort_if(Gate::denies('cameras_view'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // $mediamtx = $this->camera_service->stopMediaMTX();
+        // if ($mediamtx == false) {
+        //     return back()->with('error', 'Service not started!');
+        // }
         $camera = $this->camera_service->getById($id);
         return view('cameras.view', compact('camera'));
     }
@@ -146,7 +151,7 @@ class CameraController extends Controller
     public function downloadRecording($id)
     {
         $recording = CameraRecording::findOrFail($id);
-        $filePath = storage_path('app/'.$recording->file_path);
+        $filePath = storage_path('app/' . $recording->file_path);
 
         if (!file_exists($filePath)) {
             dd([

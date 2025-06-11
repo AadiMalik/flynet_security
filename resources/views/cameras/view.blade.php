@@ -129,16 +129,24 @@
 </script>
 <script>
       $(document).ready(function() {
+            let interval = null;
+
             $('#recordBtn').on('click', function() {
                   const $btn = $(this);
                   const cameraId = $btn.data('id');
                   const $timer = $('#recordTimer');
 
+                  // Reset UI
                   $btn.prop('disabled', true).text('Recording...');
                   $timer.text('⏳ 5:00');
 
                   let secondsLeft = 300;
-                  const interval = setInterval(() => {
+
+                  // Clear any previous interval
+                  if (interval) clearInterval(interval);
+
+                  // Start countdown
+                  interval = setInterval(() => {
                         secondsLeft--;
                         const min = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
                         const sec = String(secondsLeft % 60).padStart(2, '0');
@@ -146,11 +154,13 @@
 
                         if (secondsLeft <= 0) {
                               clearInterval(interval);
+                              interval = null;
                               $btn.prop('disabled', false).html('<i class="fa fa-video"></i> Record New Video');
                               $timer.text('');
                         }
                   }, 1000);
 
+                  // Fire AJAX to trigger Laravel recording
                   $.ajax({
                         url: "{{ url('cameras/recording/') }}/" + cameraId,
                         type: 'GET',
@@ -158,7 +168,10 @@
                               toastr.success(res.message || 'Recording started successfully. File will be available after 5 minutes.');
                         },
                         error: function(xhr) {
+                              // Stop timer and reset UI
                               clearInterval(interval);
+                              interval = null;
+
                               $btn.prop('disabled', false).html('<i class="fa fa-video"></i> Record New Video');
                               $timer.text('');
 

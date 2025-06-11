@@ -155,19 +155,29 @@ class CameraService
       }
 
       // Optional method to restart MediaMTX service
-      protected function restartMediaMTX()
+      public function restartMediaMTX()
       {
             // Execute a command to restart MediaMTX service if applicable
             exec('sudo systemctl restart mediamtx');
       }
+      public function stopMediaMTX()
+      {
+            // Forcefully terminate MediaMTX if it's running
+            exec('taskkill /F /IM mediamtx.exe', $output, $result);
 
+            if ($result === 0) {
+                  return 'MediaMTX stopped successfully.';
+            } else {
+                  return 'MediaMTX was not running or could not be stopped.';
+            }
+      }
       public function getById($id)
       {
             return $this->model_camera->getModel()::with('recordings')->findOrFail($id);
       }
 
       //Camera Recording
-      public function cameraRecording($camera_id, $duration = 60)
+      public function cameraRecording($camera_id, $duration = 300)
       {
             // $camera = $this->model_camera->getModel()::findOrFail($camera_id);
             // $slug = $camera->slug;
@@ -225,9 +235,13 @@ class CameraService
             }
 
             // FFmpeg command to run in background
+            $ffmpegPath = storage_path('app/ffmpeg/bin/ffmpeg.exe'); // Full path to ffmpeg inside storage
+            $ffmpegPath = str_replace('/', '\\', $ffmpegPath); // Normalize path for Windows
+
             $command = implode(" ", [
                   "start /B",
-                  "C:\\ffmpeg\\bin\\ffmpeg.exe",
+                  '""', // Empty title required for Windows "start" command
+                  "\"$ffmpegPath\"",
                   "-y",
                   "-rw_timeout",
                   "15000000",
