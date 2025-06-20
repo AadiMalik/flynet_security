@@ -60,13 +60,14 @@ Route::view('consumption-calculator', 'consumption/index');
 
 Route::view('address-list', 'address_list/index');
 
-Route::view('dashboard', 'home');
+// Route::view('dashboard', 'home');
 
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
 
       Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+      Route::get('camera-points', [App\Http\Controllers\HomeController::class, 'cameras']);
 
       Route::group(['prefix' => 'permissions'], function () {
             Route::get('/', [PermissionController::class, 'index']);

@@ -1,9 +1,9 @@
-(function($) {
+(function ($) {
     "use strict"
 
 
     //todo list
-    $(".tdl-new").on('keypress', function(e) {
+    $(".tdl-new").on('keypress', function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
 
@@ -33,11 +33,11 @@
 
 
 
-    $(".tdl-content a").on("click", function() {
+    $(".tdl-content a").on("click", function () {
 
         var _li = $(this).parent().parent("li");
 
-        _li.addClass("remove").stop().delay(100).slideUp("fast", function() {
+        _li.addClass("remove").stop().delay(100).slideUp("fast", function () {
 
             _li.remove();
 
@@ -51,11 +51,11 @@
 
     // for dynamically created a tags
 
-    $(".tdl-content").on('click', "a", function() {
+    $(".tdl-content").on('click', "a", function () {
 
         var _li = $(this).parent().parent("li");
 
-        _li.addClass("remove").stop().delay(100).slideUp("fast", function() {
+        _li.addClass("remove").stop().delay(100).slideUp("fast", function () {
 
             _li.remove();
 
@@ -75,117 +75,126 @@
 })(jQuery);
 
 
-(function($) {
-    "use strict"
+(function ($) {
+    "use strict";
 
-    var i = new Datamap( {
-        scope: "world", 
-        element: document.getElementById("world-map"), 
-        responsive: !0, 
+    let map = new Datamap({
+        scope: "world",
+        element: document.getElementById("world-map"),
+        responsive: true,
         geographyConfig: {
-            popupOnHover: !1, 
-            highlightOnHover: !1, 
-            borderColor: "transparent", 
-            borderWidth: 1, 
-            highlightBorderWidth: 3, 
-            highlightFillColor: "rgba(0,123,255,0.5)", 
-            highlightBorderColor: "transparent", 
+            popupOnHover: false,
+            highlightOnHover: false,
+            borderColor: "transparent",
             borderWidth: 1
-        }, 
+        },
         bubblesConfig: {
-            popupTemplate: function (e, i) {
-                return '<div class="datamap-sales-hover-tooltip">' + i.country + '<span class="ml-2"></span>' + i.sold + "</div>"
-            }, 
-            borderWidth: 0, 
-            highlightBorderWidth: 3, 
-            highlightFillColor: "rgba(0,123,255,0.5)", 
-            highlightBorderColor: "transparent", 
-            fillOpacity: .75
-        }, 
+            popupTemplate: function (geo, data) {
+                return `
+                    <div class="datamap-sales-hover-tooltip">
+                        <strong>${data.name}</strong><br>
+                        IP: ${data.ip}
+                    </div>`;
+            },
+            borderWidth: 0,
+            highlightBorderWidth: 3,
+            highlightFillColor: "rgba(0,123,255,0.5)",
+            highlightBorderColor: "transparent",
+            fillOpacity: 0.75
+        },
         fills: {
-            Visited: "#777", 
-            neato: "#777", 
-            white: "#777", 
-            defaultFill: "#EBEFF2"
+            defaultFill: "#EBEFF2",
+            camera: "#007bff"
         }
     });
-    
-    i.bubbles([{
-        centered: "USA", fillKey: "white", radius: 5, sold: "$500", country: "United States"
-    }, {
-        centered: "SAU", fillKey: "Visited", radius: 5, sold: "$900", country: "Saudia Arabia"
-    }, {
-        centered: "RUS", fillKey: "neato", radius: 5, sold: "$250", country: "Russia"
-    }, {
-        centered: "CAN", fillKey: "white", radius: 5, sold: "$1000", country: "Canada"
-    }, {
-        centered: "IND", fillKey: "Visited", radius: 5, sold: "$50", country: "India"
-    }, {
-        centered: "AUS", fillKey: "white", radius: 5, sold: "$700", country: "Australia"
-    }, {
-        centered: "BGD", fillKey: "Visited", radius: 5, sold: "$1500", country: "Bangladesh"
+
+    function fetchCameraData() {
+        $.ajax({
+            url: "/camera-points",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                map.bubbles(data);
+
+                // Delay to ensure bubbles are drawn before binding events
+                setTimeout(() => {
+                    document.querySelectorAll(".datamaps-bubble").forEach(el => {
+                        el.style.cursor = "pointer";
+                        el.addEventListener("click", function (e) {
+                            const d = d3.select(this).datum(); // get data bound to bubble
+                            if (d && d.id) {
+                                window.location.href = "/cameras/view/" + d.id;
+                            }
+                        });
+                    });
+                }, 300);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading camera data:", error);
+            }
+        });
     }
-    ]),
-    window.addEventListener("resize", function (e) {
-        i.resize()
+
+    fetchCameraData();
+
+    window.addEventListener("resize", function () {
+        map.resize();
+    });
+
+})(jQuery);
+
+
+
+(function ($) {
+    "use strict"
+
+
+    // LINE CHART
+    // Morris bar chart
+    Morris.Bar({
+        element: 'morris-bar-chart',
+        data: [{
+            y: '2016',
+            a: 100,
+            b: 90,
+        }, {
+            y: '2017',
+            a: 75,
+            b: 65,
+        }, {
+            y: '2018',
+            a: 50,
+            b: 40,
+        }, {
+            y: '2019',
+            a: 75,
+            b: 65,
+        }, {
+            y: '2020',
+            a: 50,
+            b: 40,
+        }, {
+            y: '2021',
+            a: 75,
+            b: 65,
+        }, {
+            y: '2022',
+            a: 100,
+            b: 90,
+        }],
+        xkey: 'y',
+        ykeys: ['a', 'b', 'c'],
+        labels: ['A', 'B', 'C'],
+        barColors: ['#FC6C8E', '#7571f9'],
+        hideHover: 'auto',
+        gridLineColor: 'transparent',
+        resize: true
     });
 
 
 
 
 
-})(jQuery);
-
-(function($) {
-    "use strict"
-
-
-     // LINE CHART
-      // Morris bar chart
- Morris.Bar({
-    element: 'morris-bar-chart',
-    data: [{
-        y: '2016',
-        a: 100,
-        b: 90,
-    }, {
-        y: '2017',
-        a: 75,
-        b: 65,
-    }, {
-        y: '2018',
-        a: 50,
-        b: 40,
-    }, {
-        y: '2019',
-        a: 75,
-        b: 65,
-    }, {
-        y: '2020',
-        a: 50,
-        b: 40,
-    }, {
-        y: '2021',
-        a: 75,
-        b: 65,
-    }, {
-        y: '2022',
-        a: 100,
-        b: 90,
-    }],
-    xkey: 'y',
-    ykeys: ['a', 'b', 'c'],
-    labels: ['A', 'B', 'C'],
-    barColors: ['#FC6C8E', '#7571f9'],
-    hideHover: 'auto',
-    gridLineColor: 'transparent',
-    resize: true
-});
-
-
-
-
-
 
 
 
@@ -193,7 +202,7 @@
 })(jQuery);
 
 
-(function($) {
+(function ($) {
     "use strict"
 
 
@@ -219,7 +228,7 @@
 
 
 
-(function($) {
+(function ($) {
     "use strict"
 
     let ctx = document.getElementById("chart_widget_2");
@@ -307,12 +316,12 @@
     });
 
 
-    
+
 
 
 })(jQuery);
 
-(function($) {
+(function ($) {
     "use strict"
 
     let ctx = document.getElementById("chart_widget_3");
@@ -390,7 +399,7 @@
     });
 
 
-    
+
 
 
 })(jQuery);
@@ -400,7 +409,7 @@
 /*******************
 Chart Chartist
 *******************/
-(function($) {
+(function ($) {
     "use strict"
 
 

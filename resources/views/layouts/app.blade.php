@@ -51,7 +51,7 @@
         ***********************************-->
         <div class="nav-header">
             <div class="brand-logo">
-                <a href="{{url('dashboard')}}">
+                <a href="{{url('home')}}">
                     <h3 style="color:#fff;">Flynet Security</h3>
                     <!-- <b class="logo-abbr"><img src="{{asset('assets/images/logo.png')}}" alt=""> </b>
                     <span class="logo-compact"><img src="{{asset('assets/images/logo-compact.png')}}" alt=""></span>
@@ -91,7 +91,7 @@
                 </div> -->
                 <div class="header-right">
                     <ul class="clearfix">
-                        <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
+                        <!-- <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
                                 <i class="mdi mdi-email-outline"></i>
                                 <span class="badge badge-pill gradient-1">3</span>
                             </a>
@@ -148,7 +148,7 @@
 
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
                                 <i class="mdi mdi-bell-outline"></i>
                                 <span class="badge badge-pill gradient-2">3</span>
@@ -203,7 +203,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="icons dropdown d-none d-md-flex">
+                        <!-- <li class="icons dropdown d-none d-md-flex">
                             <a href="javascript:void(0)" class="log-user" data-toggle="dropdown">
                                 <span>English</span> <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
                             </a>
@@ -215,7 +215,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative" data-toggle="dropdown">
                                 <span class="activity active"></span>
@@ -282,7 +282,7 @@
                 <ul class="metismenu" id="menu">
                     <li class="nav-label">Dashboard</li>
                     <li>
-                        <a href="{{url('dashboard')}}" aria-expanded="false">
+                        <a href="{{url('home')}}" aria-expanded="false">
                             <i class="fa fa-home menu-icon"></i><span class="nav-text">Dashboard</span>
                         </a>
                     </li>

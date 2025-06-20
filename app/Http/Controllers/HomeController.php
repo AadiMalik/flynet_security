@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Concrete\HomeService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,9 +12,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    protected $home_service;
+    public function __construct(HomeService $home_service)
     {
         $this->middleware('auth');
+        $this->home_service = $home_service;
     }
 
     /**
@@ -23,6 +26,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $state = $this->home_service->dasboard();
+        return view('home',compact('state'));
+    }
+    public function cameras(){
+        $cameras = $this->home_service->cameras();
+        return response()->json($cameras);
     }
 }

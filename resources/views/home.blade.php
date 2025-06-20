@@ -8,54 +8,78 @@
             <div class="col-lg-3 col-sm-6">
                 <div class="card gradient-1">
                     <div class="card-body">
-                        <h3 class="card-title text-white">Products Sold</h3>
+                        <h3 class="card-title text-white">Users</h3>
                         <div class="d-inline-block">
-                            <h2 class="text-white">4565</h2>
-                            <p class="text-white mb-0">Jan - March 2019</p>
-                        </div>
-                        <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="card gradient-2">
-                    <div class="card-body">
-                        <h3 class="card-title text-white">Net Profit</h3>
-                        <div class="d-inline-block">
-                            <h2 class="text-white">$ 8541</h2>
-                            <p class="text-white mb-0">Jan - March 2019</p>
-                        </div>
-                        <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="card gradient-3">
-                    <div class="card-body">
-                        <h3 class="card-title text-white">New Customers</h3>
-                        <div class="d-inline-block">
-                            <h2 class="text-white">4565</h2>
-                            <p class="text-white mb-0">Jan - March 2019</p>
+                            <h2 class="text-white">{{$state['users']??0}}</h2>
+                            <p class="text-white mb-0"></p>
                         </div>
                         <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <div class="card gradient-4">
+                <div class="card gradient-2">
                     <div class="card-body">
-                        <h3 class="card-title text-white">Customer Satisfaction</h3>
+                        <h3 class="card-title text-white">Cameras</h3>
                         <div class="d-inline-block">
-                            <h2 class="text-white">99%</h2>
-                            <p class="text-white mb-0">Jan - March 2019</p>
+                            <h2 class="text-white">{{$state['cameras']??0}}</h2>
+                            <p class="text-white mb-0"></p>
+                        </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-camera"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-3">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Mosaics</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{$state['mosaics']??0}}</h2>
+                            <p class="text-white mb-0"></p>
                         </div>
                         <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Groups</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{$state['groups']??0}}</h2>
+                            <p class="text-white mb-0"></p>
+                        </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-coffee"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-5">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Patrols</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{$state['patrols']??0}}</h2>
+                            <p class="text-white mb-0"></p>
+                        </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-eye"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card gradient-6">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Videos</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">{{$state['videos']??0}}</h2>
+                            <p class="text-white mb-0"></p>
+                        </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-file-video-o"></i></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-12">
@@ -97,11 +121,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-6 col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -167,9 +191,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-3 col-sm-6">
                 <div class="card">
                     <div class="card-body">
@@ -177,7 +201,6 @@
                             <img src="{{asset('assets/images/users/8.jpg')}}" class="rounded-circle" alt="">
                             <h5 class="mt-3 mb-1">Ana Liem</h5>
                             <p class="m-0">Senior Manager</p>
-                            <!-- <a href="javascript:void()" class="btn btn-sm btn-warning">Send Message</a> -->
                         </div>
                     </div>
                 </div>
@@ -189,7 +212,7 @@
                             <img src="{{asset('assets/images/users/5.jpg')}}" class="rounded-circle" alt="">
                             <h5 class="mt-3 mb-1">John Abraham</h5>
                             <p class="m-0">Store Manager</p>
-                            <!-- <a href="javascript:void()" class="btn btn-sm btn-warning">Send Message</a> -->
+                            
                         </div>
                     </div>
                 </div>
@@ -201,7 +224,7 @@
                             <img src="{{asset('assets/images/users/7.jpg')}}" class="rounded-circle" alt="">
                             <h5 class="mt-3 mb-1">John Doe</h5>
                             <p class="m-0">Sales Man</p>
-                            <!-- <a href="javascript:void()" class="btn btn-sm btn-warning">Send Message</a> -->
+                            
                         </div>
                     </div>
                 </div>
@@ -213,15 +236,15 @@
                             <img src="{{asset('assets/images/users/1.jpg')}}" class="rounded-circle" alt="">
                             <h5 class="mt-3 mb-1">Mehedi Titas</h5>
                             <p class="m-0">Online Marketer</p>
-                            <!-- <a href="javascript:void()" class="btn btn-sm btn-warning">Send Message</a> -->
+                            
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>
+        </div> -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
@@ -350,10 +373,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
+            <!-- <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
 
                 <div class="card">
                     <div class="chart-wrapper mb-4">
@@ -448,11 +471,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-xl-6 col-lg-12 col-sm-12 col-xxl-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title mb-0">Store Location</h4>
+                        <h4 class="card-title mb-0">Camera Location</h4>
                         <div id="world-map" style="height: 470px;"></div>
                     </div>
                 </div>
@@ -461,7 +484,7 @@
 
 
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-3 col-sm-6">
                 <div class="card">
                     <div class="social-graph-wrapper widget-facebook">
@@ -546,7 +569,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <!-- #/ container -->
 </div>
