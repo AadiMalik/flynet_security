@@ -127,6 +127,24 @@ class CameraController extends Controller
         $camera = $this->camera_service->getById($id);
         return view('cameras.view', compact('camera'));
     }
+
+    public function cameraJson(){
+        $cameras = $this->camera_service->allActiveCamera();
+        $data=[];
+        foreach($cameras as $item)
+        {
+            $data[]=[
+                'id'=>$item->id,
+                'stream_type'=>$item->protocol??'',
+                'stream_url'=>$item->stream_url
+            ];
+        }
+        return response()->json([
+            'status' => 'success',
+            'cameras' => $data
+        ]);
+    }
+
     public function recording($id)
     {
         try {

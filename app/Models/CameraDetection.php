@@ -11,6 +11,7 @@ class CameraDetection extends Model
     use HasFactory;
     protected $fillable = [
         'camera_id',
+        'confidence',
         'object_type',
         'detected_at',
         'screenshot_path'
